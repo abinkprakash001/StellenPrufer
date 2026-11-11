@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>StellenPrüfer</title>
+
+  <style>
+
+    * {
+
+      box-sizing: border-box;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+    body {
+
+      width: 410px;
+
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+
+      background: #f7f7f5;
+
+      color: #18181b;
+
+      padding: 12px;
+
+      -webkit-font-smoothing: antialiased;
+
+    }
+
+    .header {
+
+      background: #ffffff;
+
+      color: #18181b;
+
+      padding: 10px 12px;
+
+      border-radius: 7px;
+
+      border: 1px solid #e4e4e7;
+
+      margin-bottom: 10px;
+
+    }
+
+    .header-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+    }
+
+    .brand {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      font-weight: 600;
+
+      font-size: 14px;
+
+      letter-spacing: -0.01em;
+
+    }
+
+    .brand img {
+
+      width: 22px;
+
+      height: 22px;
+
+      border-radius: 4px;
+
+      object-fit: contain;
+
+    }
+
+    .badge-ext {
+
+      font-family: Consolas, "Courier New", monospace;
+
+      font-size: 10.5px;
+
+      background: #f4f4f5;
+
+      color: #52525b;
+
+      border: 1px solid #e4e4e7;
+
+      padding: 2px 7px;
+
+      border-radius: 4px;
+
+      font-weight: 500;
+
+    }
+
+    .user-profile-bar {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      margin-top: 7px;
+
+      padding-top: 7px;
+
+      border-top: 1px solid #f4f4f5;
+
+      font-size: 11px;
+
+      color: #71717a;
+
+    }
+
+    .user-status-dot {
+
+      width: 6px;
+
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: #16a34a;
+
+      flex-shrink: 0;
+
+    }
+
+    .user-profile-info {
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+    }
+
+    .user-profile-info strong {
+
+      color: #18181b;
+
+      font-weight: 600;
+
+    }
+
+
+
+    .card {
+
+      background: #ffffff;
+
+      border: 1px solid #e4e4e7;
+
+      border-radius: 7px;
+
+      padding: 12px;
+
+      margin-bottom: 9px;
+
+    }
+
+
+
+    .search-box-card {
+
+      background: #ffffff;
+
+      border: 1px solid #e4e4e7;
+
+      border-radius: 7px;
+
+      padding: 9px 11px;
+
+      margin-bottom: 9px;
+
+    }
+
+    .search-label {
+
+      font-size: 11px;
+
+      font-weight: 500;
+
+      color: #52525b;
+
+      margin-bottom: 6px;
+
+    }
+
+    .search-input-group {
+
+      display: flex;
+
+      gap: 6px;
+
+    }
+
+    .search-input {
+
+      flex: 1;
+
+      border: 1px solid #d4d4d8;
+
+      border-radius: 5px;
+
+      padding: 6px 9px;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      color: #18181b;
+
+      outline: none;
+
+    }
+
+    .search-input:focus {
+
+      border-color: #18181b;
+
+    }
+
+    .btn-verify-search {
+
+      background: #18181b;
+
+      color: #ffffff;
+
+      border: none;
+
+      padding: 6px 12px;
+
+      border-radius: 5px;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      font-weight: 500;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+
+    }
+
+    .btn-verify-search:hover {
+
+      background: #27272a;
+
+    }
+
+
+
+    .loader {
+
+      display: none;
+
+      text-align: center;
+
+      padding: 20px 12px;
+
+    }
+
+    .loader img {
+
+      width: 34px;
+
+      height: 34px;
+
+      border-radius: 50%;
+
+      animation: spin 1.1s linear infinite;
+
+    }
+
+    .loader p {
+
+      font-size: 12px;
+
+      font-weight: 500;
+
+      color: #52525b;
+
+      margin-top: 8px;
+
+    }
+
+    @keyframes spin {
+
+      0% { transform: rotate(0deg); }
+
+      100% { transform: rotate(360deg); }
+
+    }
+
+
+
+    #scorePopupCard {
+
+      display: none;
+
+    }
+
+    .trust-top {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      user-select: none;
+
+      padding: 2px 0;
+
+    }
+
+    .score-circle {
+
+      width: 64px;
+
+      height: 64px;
+
+      border-radius: 6px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-family: Consolas, "Courier New", monospace;
+
+      flex-shrink: 0;
+
+      border: 1px solid #bbf7d0;
+
+      background: #f0fdf4;
+
+      color: #166534;
+
+    }
+
+    .score-circle .score-num {
+
+      font-size: 19px;
+
+      font-weight: 600;
+
+      line-height: 1.05;
+
+    }
+
+    .score-circle .score-lbl {
+
+      font-size: 9.5px;
+
+      font-weight: 500;
+
+      opacity: 0.8;
+
+    }
+
+    .score-valid {
+
+      border-color: #bbf7d0;
+
+      background: #f0fdf4;
+
+      color: #166534;
+
+    }
+
+    .score-warn {
+
+      border-color: #fde68a;
+
+      background: #fffbeb;
+
+      color: #92400e;
+
+    }
+
+    .score-danger {
+
+      border-color: #fecaca;
+
+      background: #fef2f2;
+
+      color: #991b1b;
+
+    }
+
+
+
+    .trust-info {
+
+      flex: 1;
+
+      min-width: 0;
+
+    }
+
+    .trust-status-pill {
+
+      display: inline-block;
+
+      font-family: Consolas, "Courier New", monospace;
+
+      font-size: 10px;
+
+      font-weight: 600;
+
+      padding: 2px 7px;
+
+      border-radius: 4px;
+
+      margin-bottom: 4px;
+
+      text-transform: uppercase;
+
+    }
+
+    .pill-valid {
+
+      background: #f0fdf4;
+
+      color: #166534;
+
+      border: 1px solid #bbf7d0;
+
+    }
+
+    .pill-warn {
+
+      background: #fffbeb;
+
+      color: #92400e;
+
+      border: 1px solid #fde68a;
+
+    }
+
+    .pill-danger {
+
+      background: #fef2f2;
+
+      color: #991b1b;
+
+      border: 1px solid #fecaca;
+
+    }
+
+    .trust-headline {
+
+      font-size: 14px;
+
+      font-weight: 600;
+
+      color: #18181b;
+
+      line-height: 1.25;
+
+      margin-bottom: 2px;
+
+    }
+
+    .trust-company {
+
+      font-size: 12.5px;
+
+      font-weight: 500;
+
+      color: #18181b;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+    }
+
+    .trust-jobtitle {
+
+      font-size: 11.5px;
+
+      color: #71717a;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      margin-top: 1px;
+
+    }
+
+    .score-out-of-badge {
+
+      display: none;
+
+    }
+
+
+
+    .btn-view-details {
+
+      width: 100%;
+
+      margin-top: 10px;
+
+      background: #18181b;
+
+      color: #ffffff;
+
+      border: none;
+
+      padding: 8px 12px;
+
+      border-radius: 5px;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      font-weight: 500;
+
+      cursor: pointer;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 6px;
+
+    }
+
+    .btn-view-details:hover {
+
+      background: #27272a;
+
+    }
+
+
+
+    #dashboardLinkWrapper {
+
+      display: none;
+
+      margin-top: 6px;
+
+    }
+
+    .btn-visit-website {
+
+      display: block;
+
+      width: 100%;
+
+      background: #ffffff;
+
+      color: #18181b;
+
+      border: 1px solid #d4d4d8;
+
+      text-align: center;
+
+      text-decoration: none;
+
+      padding: 7px 12px;
+
+      border-radius: 5px;
+
+      font-size: 12px;
+
+      font-weight: 500;
+
+    }
+
+    .btn-visit-website:hover {
+
+      background: #f4f4f5;
+
+    }
+
+    .btn-open-form {
+
+      display: block;
+
+      width: 100%;
+
+      margin-top: 4px;
+
+      background: transparent;
+
+      color: #52525b;
+
+      text-align: center;
+
+      text-decoration: none;
+
+      padding: 5px 8px;
+
+      font-size: 11px;
+
+    }
+
+    .btn-open-form:hover {
+
+      color: #18181b;
+
+      text-decoration: underline;
+
+    }
+
+    .btn-rescan {
+
+      display: block;
+
+      width: 100%;
+
+      margin-top: 4px;
+
+      background: transparent;
+
+      border: none;
+
+      color: #71717a;
+
+      font-size: 11px;
+
+      cursor: pointer;
+
+      text-decoration: underline;
+
+      padding: 2px;
+
+    }
+
+
+
+    #viewDetails {
+
+      display: none;
+
+    }
+
+    .back-nav-bar {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      margin-bottom: 9px;
+
+    }
+
+    .btn-go-back {
+
+      background: #ffffff;
+
+      color: #18181b;
+
+      border: 1px solid #d4d4d8;
+
+      padding: 5px 10px;
+
+      border-radius: 5px;
+
+      font-family: inherit;
+
+      font-size: 11.5px;
+
+      font-weight: 500;
+
+      cursor: pointer;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 4px;
+
+    }
+
+    .btn-go-back:hover {
+
+      background: #f4f4f5;
+
+    }
+
+    .details-view-title {
+
+      font-size: 12px;
+
+      font-weight: 600;
+
+      color: #18181b;
+
+    }
+
+    .section-title {
+
+      font-size: 12px;
+
+      font-weight: 600;
+
+      color: #18181b;
+
+      margin-bottom: 6px;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+    }
+
+    .reason-box {
+
+      font-size: 12px;
+
+      color: #27272a;
+
+      line-height: 1.5;
+
+      background: #fafafa;
+
+      border: 1px solid #e4e4e7;
+
+      border-radius: 5px;
+
+      padding: 8px 10px;
+
+      margin-bottom: 4px;
+
+    }
+
+    .detail-row {
+
+      font-size: 12px;
+
+      padding: 6px 0;
+
+      border-bottom: 1px solid #f4f4f5;
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+    .detail-row:last-child {
+
+      border-bottom: none;
+
+    }
+
+    .detail-row strong {
+
+      color: #52525b;
+
+      font-weight: 500;
+
+      flex-shrink: 0;
+
+    }
+
+    .detail-row span, .detail-row a {
+
+      text-align: right;
+
+      color: #18181b;
+
+      font-weight: 500;
+
+      word-break: break-word;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="header">
+
+    <div class="header-top">
+
+      <div class="brand">
+
+        <img src="logo.png" alt="StellenPrüfer">
+
+        <span>StellenPrüfer</span>
+
+        <button type="button" id="toggleSearchBarBtn" title="Search job link or company" style="background: #f4f4f5; border: 1px solid #d4d4d8; border-radius: 5px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #18181b; margin-left: 4px; padding: 0;">
+
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+
+            <circle cx="11" cy="11" r="8"></circle>
+
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+      <span class="badge-ext">JOB CHECKER</span>
+
+    </div>
+
+    <div class="user-profile-bar" id="userProfileBar">
+
+      <span class="user-status-dot"></span>
+
+      <span class="user-profile-info" id="userProfileText">
+
+        Account: <strong id="userName">somanjiji</strong> (<span id="userEmail">som123@gmail.com</span>)
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- VIEW 1: MAIN SEARCH & SUMMARY -->
+
+  <div id="viewMain">
+
+    <div class="search-box-card" id="searchBoxCard" style="display: none;">
+
+      <div class="search-label">
+
+        Or check any job link or company name:
+
+      </div>
+
+      <div class="search-input-group">
+
+        <input type="text" id="manualSearchInput" class="search-input" placeholder="Paste job link or company name...">
+
+        <button type="button" id="manualSearchBtn" class="btn-verify-search">
+
+          Check
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="card" id="currentTabCard" style="margin-bottom: 9px;">
+
+      <div style="font-size: 10.5px; font-weight: 500; color: #71717a; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+
+        <span>Current Open Job Page</span>
+
+        <span style="color: #16a34a; font-family: Consolas, "Courier New", monospace; font-size: 10px;">Ready</span>
+
+      </div>
+
+      <div id="tabDetectedTitle" style="font-size: 13px; font-weight: 600; color: #18181b; line-height: 1.35; margin-bottom: 2px;">
+
+        Reading current tab...
+
+      </div>
+
+      <div id="tabDetectedCompany" style="font-size: 11.5px; color: #52525b; font-weight: 500; margin-bottom: 9px;">
+
+        -
+
+      </div>
+
+      <button type="button" id="btnVerifyCurrentTab" style="width: 100%; background: #18181b; color: #ffffff; border: none; padding: 8px 12px; border-radius: 5px; font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer;">
+
+        verify this job now
+
+      </button>
+
+    </div>
+
+
+
+    <div id="loaderBox" class="loader card">
+
+      <img src="logo.png" alt="Loading">
+
+      <p id="loaderMessage">verifying the job.....</p>
+
+    </div>
+
+
+
+    <div id="scorePopupCard" class="card">
+
+      <div class="trust-top" id="scoreCardTop" style="cursor: pointer;">
+
+        <div id="scoreCircle" class="score-circle score-valid">
+
+          <span id="scoreNum" class="score-num">92</span>
+
+          <span class="score-lbl">/ 100</span>
+
+        </div>
+
+        <div class="trust-info">
+
+          <span id="trustPill" class="trust-status-pill pill-valid">SAFE TO APPLY</span>
+
+          <div id="trustHeadline" class="trust-headline">Verified Company</div>
+
+          <div id="trustCompany" class="trust-company">-</div>
+
+          <div id="trustJobTitle" class="trust-jobtitle">-</div>
+
+          <div id="quickPillarsRow" style="display: none; gap: 4px; margin-top: 5px; flex-wrap: wrap;">
+
+            <span id="quickGhostBadge" style="font-size: 9.5px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0;">Ghost Check: Active Vacancy</span>
+
+            <span id="quickSalaryBadge" style="font-size: 9.5px; font-weight: 600; padding: 2px 5px; border-radius: 4px; background: #f4f4f5; color: #3f3f46; border: 1px solid #e4e4e7;">Pay: Normal</span>
+
+            <span id="quickResumeBadge" style="font-size: 9.5px; font-weight: 600; padding: 2px 5px; border-radius: 4px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;">Match: --%</span>
+
+          </div>
+
+          <div class="score-out-of-badge">
+
+            <strong id="badgeScoreOutOf">92 / 100</strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 5px;">
+
+        <button id="btnViewDetailedReport" class="btn-view-details" type="button" style="margin-top: 0;">
+
+          <span>view complete job report &rarr;</span>
+
+        </button>
+
+
+
+        <div id="dashboardLinkWrapper" style="display: flex; flex-direction: column; gap: 4px;">
+
+          <a id="visitWebsiteLink" href="http://127.0.0.1:5000/result.html?from=extension" target="_blank" class="btn-visit-website">
+
+            <span>Open on StellenPrüfer website &nearr;</span>
+
+          </a>
+
+          <a id="openFormLink" href="http://127.0.0.1:5000/index.html?openForm=1&from=extension" target="_blank" class="btn-open-form">
+
+            <span>Edit details in web form</span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <button id="rescanBtn" class="btn-rescan" type="button">Check current tab again</button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- VIEW 2: SIMPLE BEGINNER-FRIENDLY DETAILED REPORT -->
+
+  <div id="viewDetails">
+
+    <div class="back-nav-bar">
+
+      <button type="button" id="btnGoBack" class="btn-go-back">
+
+        <span>&larr; Back</span>
+
+      </button>
+
+      <span class="details-view-title">Job Report</span>
+
+      <a id="dTopVisitWebsite" href="http://127.0.0.1:5000/result.html?from=extension" target="_blank" style="display:none;"></a>
+
+    </div>
+
+
+
+    <!-- 1. Verification Job Advertisement: Score & Summary -->
+
+    <div class="card">
+
+      <div class="trust-top" style="margin-bottom: 10px;">
+
+        <div id="dScoreCircle" class="score-circle score-valid">
+
+          <span id="dScoreNum" class="score-num">90</span>
+
+          <span class="score-lbl">/ 100</span>
+
+        </div>
+
+        <div class="trust-info">
+
+          <span id="dStatusPill" class="trust-status-pill pill-valid">SAFE TO APPLY</span>
+
+          <div id="dJobTitle" class="trust-headline">Job Title</div>
+
+          <div id="dCompany" class="trust-company">Company Name</div>
+
+          <div id="dJobTitleEn" style="font-size: 10.5px; color: #1e40af; background: #eff6ff; border: 1px solid #bfdbfe; padding: 2px 6px; border-radius: 4px; margin-top: 4px; display: none;"></div>
+
+          <div class="score-out-of-badge">
+
+            <strong id="dBadgeScore">90 / 100</strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="section-title">Verification Summary</div>
+
+      <div id="dReasonSummary" class="reason-box">This job looks real and safe to apply for.</div>
+
+
+
+      <div id="dGhostBox" style="display: block; padding: 8px 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 5px; margin-top: 8px;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px;">
+          <div id="dGhostTitle" style="font-weight: 700; font-size: 11.5px; color: #166534;">
+            Ghost Job Check: Not a Ghost Job (Active Vacancy)
+          </div>
+          <span id="dGhostPill" style="font-family: Consolas, 'Courier New', monospace; font-size: 9.5px; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;">
+            Active
+          </span>
+        </div>
+
+        <p id="dGhostDesc" style="font-size: 11px; color: #15803d; margin-top: 3px; line-height: 1.4;">
+          This job listing passed active vacancy checks (recent posting date, specific tasks, and verified employer details).
+        </p>
+
+        <div id="dGhostFactorsList" style="display: flex; flex-direction: column; gap: 4px; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(0,0,0,0.06);"></div>
+
+      </div>
+
+
+
+      <div id="dWarningsBox" style="display: none; padding: 8px 10px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 5px; margin-top: 8px;">
+
+        <div style="font-weight: 600; font-size: 11.5px; color: #991b1b;">
+
+          Things to Watch Out For:
+
+        </div>
+
+        <ul id="dWarningsList" style="margin-top: 4px; padding-left: 16px; font-size: 11px; color: #991b1b; line-height: 1.4;"></ul>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 1. Verification Job Advertisement: 4-Pillar Intelligence Audit -->
+
+    <div class="card" id="dFourPillarsCard" style="display: none; padding: 10px 12px;">
+
+      <div class="section-title" style="margin-bottom: 8px;">Multi-Pillar Intelligence Audit</div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px;">
+
+        <div style="padding: 6px 8px; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 5px;">
+
+          <div style="color: #71717a; font-size: 10px; font-weight: 500;">Salary Benchmark</div>
+
+          <div id="pSalaryText" style="font-weight: 600; margin-top: 2px; color: #18181b;">Standard Rate</div>
+
+        </div>
+
+        <div style="padding: 6px 8px; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 5px;">
+
+          <div style="color: #71717a; font-size: 10px; font-weight: 500;">Resume Match</div>
+
+          <div id="pResumeText" style="font-weight: 600; margin-top: 2px; color: #166534;">--% Match</div>
+
+        </div>
+
+        <div style="padding: 6px 8px; background: #fafafa; border: 1px solid #e4e4e7; border-radius: 5px;">
+
+          <div style="color: #71717a; font-size: 10px; font-weight: 500;">Commercial Register</div>
+
+          <div id="pRegisterText" style="font-weight: 600; margin-top: 2px; color: #166534;">Handelsregister</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 1. Verification Job Advertisement: Quick Safety Check -->
+
+    <div class="card">
+
+      <div class="section-title">Quick Safety Check</div>
+
+      <div class="detail-row">
+
+        <strong>1. Official Website</strong>
+
+        <span id="dCustSite">-</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>2. Company Career Page</strong>
+
+        <span id="dCustCareer">-</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>3. Registered in Germany</strong>
+
+        <span id="dRegister">-</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>4. Link Safety Check</strong>
+
+        <span id="dVirusTotal">-</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>5. Posted Date</strong>
+
+        <span id="dDatePosted">-</span>
+
+      </div>
+
+      <div class="detail-row" style="display:none;">
+
+        <strong>Status</strong>
+
+        <span id="dAvailability">-</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>6. Pay / Salary</strong>
+
+        <span id="dSalary">-</span>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 1. Verification Job Advertisement: Why It Got This Score -->
+
+    <div class="card">
+
+      <div class="section-title">
+
+        <span>Why It Got This Score</span>
+
+        <span id="dBreakdownTotal" style="font-family: Consolas, "Courier New", monospace; color: #52525b; font-size: 11px;">90 / 100</span>
+
+      </div>
+
+      <div id="dBreakdownList" style="display: flex; flex-direction: column; gap: 5px;"></div>
+
+    </div>
+
+
+
+    <!-- 2. Company: About the Company -->
+
+    <div class="card" id="dCompanyIntelCard" style="display: none;">
+
+      <div class="section-title">
+
+        <span>About the Company</span>
+
+        <span id="dCiBadge" style="font-family: Consolas, "Courier New", monospace; background: #f0fdf4; color: #166534; font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid #bbf7d0;">Verified Employer</span>
+
+      </div>
+
+
+
+      <div style="background: #fafafa; border: 1px solid #e4e4e7; border-radius: 5px; padding: 8px 10px;">
+
+        <div style="margin-bottom: 3px;">
+
+          <strong id="dCiName" style="color: #18181b; font-size: 12.5px;">Company</strong>
+
+        </div>
+
+        <div id="dCiIndustry" style="font-size: 11px; color: #52525b;">Germany</div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 3. Reviews: Employee Reviews & Workplace Feedback -->
+
+    <div class="card" id="dReviewsCard" style="display: none;">
+
+      <div class="section-title">
+
+        <span>Employee Reviews &amp; Feedback</span>
+
+        <span id="dCiRating" style="font-family: Consolas, "Courier New", monospace; color: #166534; font-weight: 600; font-size: 10.5px;">4.1 / 5.0</span>
+
+      </div>
+
+
+
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 5px; padding: 8px 10px; font-size: 11.5px; color: #166534;">
+
+        <strong style="display:block; margin-bottom: 2px;">What employees say:</strong>
+
+        <p id="dCiFeedbackSnippet" style="line-height: 1.4; color: #166534;"></p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- 4. Resume Things: Candidate Resume Match & Skills Comparison -->
+
+    <div class="card" id="dResumeFitCard" style="display: none;">
+
+      <div class="section-title">
+
+        <span>Skills Comparison</span>
+
+        <span id="dFitScoreBadge" style="font-family: Consolas, "Courier New", monospace; font-size: 10.5px; font-weight: 600; background: #dcfce7; color: #166534; padding: 2px 7px; border-radius: 4px; border: 1px solid #bbf7d0;">--% Match</span>
+
+      </div>
+
+
+
+      <!-- Career Focus Advisory Banner if Warehouse or Mismatch -->
+
+      <div id="dCareerAdvisoryBox" style="display: none; padding: 10px 12px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; margin-bottom: 9px; font-size: 11.5px; line-height: 1.45; color: #92400e;">
+
+        <div style="font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
+
+          <span>⚠️</span> Career Note: Different Field than Your Resume
+
+        </div>
+
+        <p id="dCareerAdvisoryMsg" style="margin: 0; color: #78350f;"></p>
+
+      </div>
+
+
+
+      <!-- Matched Skills Badges -->
+
+      <div id="dMatchedSkillsSection" style="margin-bottom: 8px;">
+
+        <div style="font-size: 11px; font-weight: 600; color: #166534; margin-bottom: 4px;">Skills You Have:</div>
+
+        <div id="dMatchedSkillsPills" style="display: flex; flex-wrap: wrap; gap: 4px;"></div>
+
+      </div>
+
+
+
+      <!-- Granular Match Reasons -->
+
+      <div id="dWhyMatchedList" style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px;"></div>
+</div>
+
+
+
+    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+
+      <button type="button" id="btnBottomGoBack" class="btn-go-back" style="width: 100%; justify-content: center;">
+
+        <span>&larr; Back</span>
+
+      </button>
+
+      <a id="dDashboardLink" href="http://127.0.0.1:5000/result.html?from=extension" target="_blank" class="btn-visit-website" style="background: #18181b; color: #ffffff; border-color: #18181b;">
+
+        Open full report on website &nearr;
+
+      </a>
+
+    </div>
+
+  </div>
+
+
+
+  <script src="popup.js"></script>
+
+</body>
+
+</html>
+

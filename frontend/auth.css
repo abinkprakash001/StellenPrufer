@@ -1,0 +1,191 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+
+.auth-body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+
+.auth-container h1 {
+    font-size: 42px;
+    color: #1d4ed8;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+
+.subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 25px;
+}
+
+
+.auth-card {
+    background: #ffffff;
+    padding: 35px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    text-align: left;
+}
+
+
+.auth-card h2 {
+    text-align: center;
+    font-size: 27px;
+    margin-bottom: 8px;
+    color: #111827;
+}
+
+
+.auth-card > p {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+
+.auth-card label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+
+.auth-card input {
+    width: 100%;
+    padding: 13px 14px;
+    margin-bottom: 18px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.auth-card input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+.auth-card button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+
+.auth-card button:hover {
+    background: #1d4ed8;
+}
+
+
+.switch-page {
+    margin-top: 20px !important;
+    margin-bottom: 0 !important;
+    font-size: 14px !important;
+    color: #6b7280;
+}
+
+
+.switch-page a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+.switch-page a:hover {
+    text-decoration: underline;
+}
+
+
+.message {
+    margin-top: 15px;
+    text-align: center !important;
+    font-size: 14px !important;
+}
+
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 28px 22px;
+    }
+
+    .auth-container h1 {
+        font-size: 36px;
+    }
+}
+
+
+@keyframes spinLogo {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.screen-loader-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.92);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    z-index: 9999;
+}
+
+.screen-loader-overlay.active {
+    display: flex;
+}
+
+.screen-loader-overlay img {
+    height: 64px;
+    width: auto;
+    animation: spinLogo 1s linear infinite;
+}
+
+.screen-loader-overlay p {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e3a8a;
+    margin: 0;
+}

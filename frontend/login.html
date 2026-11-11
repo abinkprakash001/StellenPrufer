@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellenPrüfer - Login</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-container">
+
+        <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="logo.png" alt="StellenPrüfer Logo" style="height: 36px; width: auto; display: block;">
+            <span>StellenPrüfer</span>
+        </h1>
+
+        <p class="subtitle">
+            Verify a job before you apply
+        </p>
+
+        <div class="auth-card">
+
+            <h2>Sign In</h2>
+
+            <p>Login to your account</p>
+
+            <form onsubmit="login(event)">
+
+                <label for="loginEmail">Email</label>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label for="loginPassword">Password</label>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="switch-page">
+                Don't have an account?
+                <a href="register.html">Create Account</a>
+            </p>
+
+            <p class="switch-page" style="margin-top: 8px !important;">
+                <a href="index.html" style="font-weight: normal; color: #6b7280;">&larr; Back to Home</a>
+            </p>
+
+            <p id="loginMessage" class="message"></p>
+
+        </div>
+
+    </div>
+
+    <script src="auth.js"></script>
+
+</body>
+</html>

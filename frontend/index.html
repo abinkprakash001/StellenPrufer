@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellenPrüfer — Verify Before You Trust | Job &amp; Employer Verification</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="main.css?v=20261107_v2">
+    <style>
+        .workspace-header {
+            background: #ffffff;
+            border-bottom: 1px solid #e4e4e7;
+            padding: 40px 24px 36px 24px;
+        }
+        .workspace-header-inner {
+            max-width: 1060px;
+            margin: 0 auto;
+        }
+        .eyebrow-tag {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            font-weight: 500;
+            color: #52525b;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .eyebrow-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #16a34a;
+            display: inline-block;
+        }
+        .workspace-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #18181b;
+            letter-spacing: -0.025em;
+            line-height: 1.25;
+            margin-bottom: 8px;
+            max-width: 680px;
+        }
+        .workspace-subtitle {
+            font-size: 14.5px;
+            color: #52525b;
+            line-height: 1.6;
+            max-width: 660px;
+            margin-bottom: 24px;
+        }
+
+        /* Search Bar */
+        .search-bar-container {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #a1a1aa;
+            border-radius: 8px;
+            padding: 5px 6px 5px 14px;
+            gap: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .search-bar-container:focus-within {
+            border-color: #18181b;
+            box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.07);
+        }
+        .search-bar-container input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: #18181b;
+            padding: 8px 2px;
+            background: transparent;
+        }
+        .search-bar-container input::placeholder {
+            color: #71717a;
+        }
+        .search-submit-btn {
+            background: #18181b;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: var(--font-sans);
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.15s;
+        }
+        .search-submit-btn:hover {
+            background: #27272a;
+        }
+
+        .sample-queries-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            font-size: 12.5px;
+            color: #71717a;
+        }
+        .sample-query-btn {
+            background: #f4f4f5;
+            border: 1px solid #e4e4e7;
+            color: #3f3f46;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .sample-query-btn:hover {
+            background: #e4e4e7;
+            color: #18181b;
+        }
+
+        /* Click-Down Verify Bar */
+        .verify-clickdown-wrapper {
+            margin-top: 16px;
+        }
+        .verify-clickdown-bar {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.15s;
+        }
+        .verify-clickdown-bar:hover {
+            border-color: #d4d4d8;
+        }
+        .verify-clickdown-bar[open] {
+            border-color: #a1a1aa;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .verify-clickdown-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 13px 18px;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            user-select: none;
+            transition: background 0.15s;
+        }
+        .verify-clickdown-summary::-webkit-details-marker {
+            display: none;
+        }
+        .verify-clickdown-summary:hover {
+            background: #f4f4f5;
+        }
+        .verify-clickdown-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .verify-clickdown-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            color: #18181b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .verify-clickdown-title {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #18181b;
+            display: block;
+        }
+        .verify-clickdown-sub {
+            font-size: 12.5px;
+            color: #71717a;
+            display: block;
+        }
+        .verify-clickdown-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: #3f3f46;
+            white-space: nowrap;
+        }
+        .verify-clickdown-chevron {
+            transition: transform 0.2s ease;
+            color: #71717a;
+        }
+        .verify-clickdown-bar[open] .verify-clickdown-chevron {
+            transform: rotate(180deg);
+        }
+        .verify-clickdown-body {
+            padding: 22px 24px;
+            background: #ffffff;
+            border-top: 1px solid #e4e4e7;
+        }
+
+        /* Live Registry Strip */
+        .registry-ledger {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+        .ledger-cell {
+            padding: 16px 20px;
+            border-right: 1px solid #e4e4e7;
+        }
+        .ledger-cell:last-child {
+            border-right: none;
+        }
+        .ledger-label {
+            font-size: 12px;
+            color: #71717a;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .ledger-value {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 600;
+            color: #18181b;
+        }
+        @media (max-width: 780px) {
+            .registry-ledger {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .ledger-cell:nth-child(2) {
+                border-right: none;
+            }
+            .ledger-cell:nth-child(1),
+            .ledger-cell:nth-child(2) {
+                border-bottom: 1px solid #e4e4e7;
+            }
+        }
+
+        /* Methodology Grid */
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 860px) {
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .spec-card {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            padding: 22px;
+        }
+        .spec-index {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: #71717a;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .spec-card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #18181b;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+        .spec-card p {
+            font-size: 13.5px;
+            color: #52525b;
+            line-height: 1.6;
+        }
+
+        /* Extension Card */
+        .extension-panel {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            padding: 28px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .extension-panel-left {
+            max-width: 600px;
+        }
+        .extension-panel-left h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #18181b;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+        .extension-panel-left p {
+            font-size: 13.5px;
+            color: #52525b;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .extension-panel-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-primary-dark {
+            background: #18181b;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+        .btn-primary-dark:hover {
+            background: #27272a;
+        }
+        .btn-secondary-outline {
+            background: #ffffff;
+            color: #18181b;
+            border: 1px solid #d4d4d8;
+            text-decoration: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s;
+        }
+        .btn-secondary-outline:hover {
+            background: #f4f4f5;
+        }
+
+        .verify-form-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            width: 100%;
+        }
+        @media (max-width: 780px) {
+            .verify-form-grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+        .verify-clickdown-bar .close-label {
+            display: none;
+        }
+        .verify-clickdown-bar[open] .open-label {
+            display: none;
+        }
+        .verify-clickdown-bar[open] .close-label {
+            display: inline;
+        }
+        .form-group input[type="file"] {
+            padding: 6px 10px;
+            height: 39px;
+            font-size: 12.5px;
+            color: #52525b;
+            background: #fafafa;
+            cursor: pointer;
+        }
+        .form-group input[type="file"]::file-selector-button {
+            background: #18181b;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            margin-right: 10px;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="logo">
+            <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                <img src="logo.png" alt="StellenPrüfer">
+                <span>StellenPrüfer</span>
+            </a>
+        </div>
+
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="profile.html">Profile</a>
+            <a href="admin.html" id="adminNavLink" style="display: none; color: #b91c1c;">Admin</a>
+            <button class="logout-btn" onclick="logout()">Sign out</button>
+        </nav>
+    </header>
+
+    <!-- WORKSPACE SEARCH & CLICK-DOWN VERIFY HEADER -->
+    <section class="workspace-header">
+        <div class="workspace-header-inner">
+            <div class="eyebrow-tag">
+                <span class="eyebrow-dot"></span>
+                <span>Verify Before You Trust</span>
+            </div>
+            <h1 class="workspace-title">Verify Before You Trust &mdash; Check a job or employer before you apply.</h1>
+            <p class="workspace-subtitle">
+                Paste a job posting URL below to verify the employer, official career page, and listing status.
+            </p>
+
+            <!-- Instant Search Input -->
+            <div class="search-bar-container">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="url" id="quickJobSearchInput" placeholder="Paste job posting URL (https://www.linkedin.com/jobs/view/...)">
+                <button type="button" class="search-submit-btn" onclick="handleQuickSearchVerify()">
+                    Check posting
+                </button>
+            </div>
+
+            <!-- CLICK-DOWN BAR: VERIFY JOB ADVERTISEMENT & CONTRACT FORM -->
+            <div class="verify-clickdown-wrapper">
+                <details id="verifyJobDropdownBar" class="verify-clickdown-bar">
+                    <summary class="verify-clickdown-summary">
+                        <div class="verify-clickdown-left">
+                            <span class="verify-clickdown-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                </svg>
+                            </span>
+                            <div>
+                                <span class="verify-clickdown-title">Verify Job Advertisement or Employment Contract</span>
+                                <span class="verify-clickdown-sub">Upload a job posting PDF / screenshot, paste job description text, or check an employment contract</span>
+                            </div>
+                        </div>
+                        <div class="verify-clickdown-right">
+                            <span class="open-label">Open form</span>
+                            <span class="close-label">Close</span>
+                            <svg class="verify-clickdown-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </summary>
+
+                    <div class="verify-clickdown-body">
+                        <!-- Mode Selector -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-bottom: 14px; margin-bottom: 16px; border-bottom: 1px solid #e4e4e7;">
+                            <div>
+                                <label for="checkType" style="font-size: 13px; font-weight: 600; color: #18181b; display: block;">What would you like to check?</label>
+                                <span style="font-size: 12px; color: #71717a;">Choose between a job posting check or an employment contract check.</span>
+                            </div>
+                            <select id="checkType" onchange="switchCheckMode()" style="padding: 8px 12px; border: 1px solid #d4d4d8; border-radius: 6px; font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: #18181b; background: #ffffff; cursor: pointer; min-width: 250px;">
+                                <option value="job_offer" selected>Job Advertisement</option>
+                                <option value="job_contract">Employment Contract (Arbeitsvertrag)</option>
+                            </select>
+                        </div>
+
+                        <!-- PAGE 1: JOB ADVERTISEMENT FORM -->
+                        <div id="jobOfferPage">
+                            <form id="jobForm" onsubmit="verifyJob(event)" style="display: flex; flex-direction: column; gap: 14px;">
+                                <input type="hidden" id="jobTitle" value="">
+                                <input type="hidden" id="company" value="">
+                                <input type="hidden" id="salary" value="">
+                                <input type="hidden" id="recruiterEmail" value="">
+
+                                <input type="hidden" id="jobUrl" value="">
+
+                                <!-- Row 1: Upload PDF or Screenshot -->
+                                <div class="form-group full-width">
+                                    <label for="documentFile">Upload Job Offer PDF or Screenshot <span style="color:#71717a;font-weight:400;">(Optional)</span></label>
+                                    <input type="file" id="documentFile" accept=".pdf,.png,.jpg,.jpeg">
+                                </div>
+
+                                <!-- Row 2: Full Width Job Description -->
+                                <div class="form-group full-width">
+                                    <label for="jobDescription">Job Description Text <span style="color:#71717a;font-weight:400;">(Optional)</span></label>
+                                    <textarea id="jobDescription" rows="4" placeholder="Paste the job description text here..."></textarea>
+                                </div>
+
+
+                                <!-- Row 3: Consent & Submit Actions -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 4px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; font-weight: 400; font-size: 12.5px; color: #52525b; cursor: pointer; margin: 0;">
+                                        <input type="checkbox" id="checkConsent" checked style="width: 15px; height: 15px; flex-shrink: 0;">
+                                        <span>I agree to process this data for company and domain verification (DSGVO).</span>
+                                    </label>
+
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <button type="button" onclick="clearJobForm()" style="padding: 9px 16px; border: 1px solid #d4d4d8; border-radius: 6px; background: #ffffff; color: #3f3f46; font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; cursor: pointer;">
+                                            Clear
+                                        </button>
+                                        <button type="submit" class="verify-btn" style="margin: 0;">
+                                            Check job posting
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- PAGE 2: EMPLOYMENT CONTRACT FORM -->
+                        <div id="jobContractPage" style="display: none;">
+                            <form id="contractForm" onsubmit="verifyContract(event)" style="display: flex; flex-direction: column; gap: 14px;">
+                                <div class="form-group full-width">
+                                    <label for="contractFile">Upload Employment Contract (PDF, PNG, JPG)</label>
+                                    <input type="file" id="contractFile" accept=".pdf,.png,.jpg,.jpeg">
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="contractText">Or Paste Contract Text <span style="color:#71717a;font-weight:400;">(Optional if file is uploaded above)</span></label>
+                                    <textarea id="contractText" rows="4" placeholder="Paste the employment contract clauses here (working hours, salary, notice period, vacation)..."></textarea>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 4px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; font-weight: 400; font-size: 12.5px; color: #52525b; cursor: pointer; margin: 0;">
+                                        <input type="checkbox" id="contractConsent" checked style="width: 15px; height: 15px; flex-shrink: 0;">
+                                        <span>I agree to process this contract for clause verification (DSGVO).</span>
+                                    </label>
+
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <button type="button" onclick="clearContractForm()" style="padding: 9px 16px; border: 1px solid #d4d4d8; border-radius: 6px; background: #ffffff; color: #3f3f46; font-family: var(--font-sans); font-size: 13.5px; font-weight: 500; cursor: pointer;">
+                                            Clear
+                                        </button>
+                                        <button type="submit" class="verify-btn" style="margin: 0;">
+                                            Check contract
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <main class="dashboard">
+
+        <section class="registry-ledger">
+            <div class="ledger-cell">
+                <div class="ledger-label">Postings analyzed</div>
+                <div class="ledger-value" id="statTotalChecks">-</div>
+            </div>
+            <div class="ledger-cell">
+                <div class="ledger-label">Employers indexed</div>
+                <div class="ledger-value" id="statCompanies">-</div>
+            </div>
+            <div class="ledger-cell">
+                <div class="ledger-label">Flagged listings</div>
+                <div class="ledger-value" id="statFlaggedFake" style="color: #b91c1c;">-</div>
+            </div>
+            
+        </section>
+
+        <!-- WHAT WE CHECK -->
+        <section class="spec-grid">
+            <div class="spec-card">
+                <h3>Registered Company</h3>
+                <p>
+                    Checks if the company is officially registered in Germany and has a real business address.
+                </p>
+            </div>
+            <div class="spec-card">
+                <h3>Official Career Page &amp; Job Age</h3>
+                <p>
+                    Verifies the job on the company's own website and flags old or inactive ghost listings.
+                </p>
+            </div>
+            <div class="spec-card">
+                <h3>Scam Signals &amp; Contracts</h3>
+                <p>
+                    Checks for fake recruiter emails, payment requests, and missing clauses in employment contracts.
+                </p>
+            </div>
+        </section>
+
+        <!-- BOTTOM EXTENSION SECTION -->
+        <section class="extension-panel" id="bottomExtensionSection">
+            <div class="extension-panel-left">
+                <h3>Chrome Extension</h3>
+                <p>
+                    Inspect job postings directly on StepStone, Indeed, LinkedIn, XING, or Stellenanzeigen.de. Extracts structured schema metadata from the active tab and runs a verification check on demand.
+                </p>
+            </div>
+            <div class="extension-panel-actions">
+                <a href="/api/download-extension" download="StellenPruefer_Browser_Extension.zip" class="btn-primary-dark">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Download extension (.zip)</span>
+                </a>
+                <a href="extension.html" class="btn-secondary-outline">
+                    <span>Installation guide</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-columns-grid">
+                <div class="footer-col">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                        <img src="logo.png" alt="StellenPrüfer" style="height: 24px; width: auto; border-radius: 4px;">
+                        <span style="font-size: 15px; font-weight: 600; color: #18181b; letter-spacing: -0.01em;">StellenPrüfer</span>
+                    </div>
+                    <p style="margin: 0; max-width: 420px;">
+                        Verify Before You Trust &mdash; Check job postings, company registrations, and employment contracts before sharing personal data.
+                    </p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Browser Extension</h4>
+                    <ul>
+                        <li><a href="/api/download-extension">Download Chrome Extension (.zip)</a></li>
+                        <li><a href="extension.html">Installation Guide</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom-bar">
+                <div>
+                    StellenPrüfer &copy; 2026 &mdash; Verify Before You Trust
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="dashboard.js?v=20261111_3"></script>
+    <script>
+        function openVerifyDropdown(e) {
+            const d = document.getElementById("verifyJobDropdownBar");
+            if (d) {
+                if (e) e.preventDefault();
+                d.open = true;
+                d.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+
+        async function loadLivePlatformStats() {
+            try {
+                const res = await fetch(`${getApiBase()}/api/platform-stats`);
+                const data = await res.json();
+                if (data && data.success && data.stats) {
+                    const s = data.stats;
+                    const elTotal = document.getElementById("statTotalChecks");
+                    const elComp = document.getElementById("statCompanies");
+                    const elFake = document.getElementById("statFlaggedFake");
+                    const elUsers = document.getElementById("statRegisteredUsers");
+
+                    if (elTotal) elTotal.textContent = Number(s.total_jobs_analyzed || 0).toLocaleString();
+                    if (elComp) elComp.textContent = Number(s.verified_companies || 0).toLocaleString();
+                    if (elFake) elFake.textContent = Number(s.fake_listings_flagged || 0).toLocaleString();
+                    if (elUsers) elUsers.textContent = Number(s.registered_jobseekers || 0).toLocaleString();
+                }
+            } catch (err) {
+                console.error("Error loading live stats:", err);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadLivePlatformStats();
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("openForm") === "1" || params.get("from") === "extension" || params.get("checkId") || params.get("company") || window.location.hash === "#verifyJobDropdownBar") {
+                const d = document.getElementById("verifyJobDropdownBar");
+                if (d) {
+                    d.open = true;
+                    setTimeout(() => d.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
