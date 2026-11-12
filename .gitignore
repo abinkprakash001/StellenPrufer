@@ -1,0 +1,24 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE / Editor settings
+.vscode/
+.idea/
+
+# Environment variables & secret API keys (NEVER commit .env)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Temporary session & sync caches
+data/current_session_user.json
+data/latest_synced_job.json
+data/latest_extension_check.json
