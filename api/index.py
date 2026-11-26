@@ -14,12 +14,15 @@ class VercelPathMiddleware:
 
     def __call__(self, environ, start_response):
         path = environ.get("PATH_INFO", "")
-        if path.startswith("/api/index/"):
-            path = path[len("/api/index"):]
-        elif path == "/api/index":
-            path = "/"
+        for prefix in ["/api/index.py", "/api/index"]:
+            if path.startswith(prefix + "/"):
+                path = path[len(prefix):]
+                break
+            elif path == prefix:
+                path = "/"
+                break
         
-        # If Flask has routes defined with /api/..., make sure path has /api if needed
+        # If Flask has routes defined with /api/..., ensure prefix exists
         if not path.startswith("/api") and path != "/" and not path.endswith(".html"):
             environ["PATH_INFO"] = "/api" + path
         else:
