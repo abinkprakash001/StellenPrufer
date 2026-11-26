@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --brand-navy: #0b2545;
+    --brand-navy-light: #16395e;
+    --brand-navy-dark: #07192f;
+    --brand-green: #16a34a;
+    --brand-green-hover: #15803d;
+    --brand-green-light: #dcfce7;
+    --text-primary: #0b2545;
+    --text-body: #475569;
+    --text-muted: #64748b;
+    --bg-page: #f8fafc;
+    --card-bg: #ffffff;
+    --border-light: #e2e8f0;
+    --border-input: #cbd5e1;
+    --font-brand: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,10 +24,12 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #f8fafc;
-    color: #1e293b;
+    font-family: var(--font-brand);
+    background: var(--bg-page);
+    color: var(--text-primary);
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .auth-body {
@@ -17,8 +38,8 @@ body {
     justify-content: center;
     align-items: center;
     padding: 36px 20px;
-    background: radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.07) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(22, 163, 74, 0.07) 0%, transparent 45%),
+    background: radial-gradient(circle at 12% 15%, rgba(11, 37, 69, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 88% 85%, rgba(22, 163, 74, 0.05) 0%, transparent 45%),
                 #f8fafc;
 }
 
@@ -37,14 +58,14 @@ body {
    ========================================================================== */
 .auth-info-panel {
     text-align: left;
-    color: #1e293b;
+    color: var(--text-primary);
 }
 
 .auth-brand-logo-row {
     display: inline-flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     text-decoration: none;
     color: inherit;
     transition: opacity 0.2s ease;
@@ -54,18 +75,18 @@ body {
     opacity: 0.92;
 }
 
-/* BIGGER LOGO AS REQUESTED */
 .auth-brand-logo-row img {
     height: 72px;
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.08));
+    filter: drop-shadow(0 4px 10px rgba(11, 37, 69, 0.1));
 }
 
 .auth-brand-title {
+    font-family: var(--font-brand);
     font-size: 34px;
     font-weight: 800;
-    color: #0f172a;
+    color: var(--brand-navy);
     letter-spacing: -0.03em;
     display: flex;
     align-items: baseline;
@@ -73,70 +94,69 @@ body {
 }
 
 .auth-brand-title span {
-    color: #16a34a;
-}
-
-.auth-brand-badge {
-    display: inline-block;
-    background: #e0f2fe;
-    color: #0284c7;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 3px 8px;
-    border-radius: 6px;
-    margin-left: 8px;
-    vertical-align: middle;
+    color: var(--brand-green);
 }
 
 .auth-hero-heading {
+    font-family: var(--font-brand);
     font-size: 32px;
     line-height: 1.25;
     font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
+    color: var(--brand-navy);
+    margin-bottom: 14px;
+    letter-spacing: -0.025em;
 }
 
 .auth-hero-desc {
+    font-family: var(--font-brand);
     font-size: 15px;
     line-height: 1.6;
-    color: #475569;
+    color: var(--text-body);
     margin-bottom: 14px;
 }
 
 .auth-hero-desc strong {
-    color: #0f172a;
+    color: var(--brand-navy);
+    font-weight: 700;
 }
 
 .auth-hero-solution {
     display: inline-flex;
     align-items: flex-start;
     gap: 10px;
-    padding: 11px 16px;
-    background: rgba(22, 163, 74, 0.08);
-    border: 1px solid rgba(22, 163, 74, 0.2);
+    padding: 12px 18px;
+    background: var(--brand-green-light);
+    border: 1px solid rgba(22, 163, 74, 0.25);
     border-radius: 12px;
     font-size: 13.5px;
     color: #166534;
     line-height: 1.5;
     margin-bottom: 22px;
+    font-weight: 500;
+}
+
+.auth-hero-solution strong {
+    color: #14532d;
+    font-weight: 700;
 }
 
 /* MASCOT ILLUSTRATION CARD */
 .auth-mascot-card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-light);
     border-radius: 16px;
     padding: 16px;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-    margin-bottom: 22px;
+    box-shadow: 0 8px 24px rgba(11, 37, 69, 0.05);
     display: flex;
     align-items: center;
     gap: 18px;
     position: relative;
     overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-mascot-card:hover {
+    box-shadow: 0 12px 28px rgba(11, 37, 69, 0.08);
 }
 
 .auth-mascot-img-wrap {
@@ -164,9 +184,10 @@ body {
 }
 
 .auth-mascot-text h3 {
+    font-family: var(--font-brand);
     font-size: 16px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--brand-navy);
     margin-bottom: 6px;
     display: flex;
     align-items: center;
@@ -174,63 +195,15 @@ body {
 }
 
 .auth-mascot-text p {
+    font-family: var(--font-brand);
     font-size: 13.5px;
     line-height: 1.45;
-    color: #475569;
+    color: var(--text-body);
     margin: 0;
 }
 
-/* REAL-WORLD IMPACT STORY BOX */
-.auth-story-box {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid #ef4444;
-    border-radius: 14px;
-    padding: 16px 18px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-    margin-bottom: 20px;
-}
-
-.auth-story-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14.5px;
-    font-weight: 700;
-    color: #991b1b;
-    margin-bottom: 8px;
-}
-
-.auth-story-text {
-    font-size: 13.5px;
-    line-height: 1.55;
-    color: #334155;
-    margin-bottom: 8px;
-}
-
-.auth-story-text:last-child {
-    margin-bottom: 0;
-}
-
-.auth-story-text strong {
-    color: #0f172a;
-}
-
-.auth-story-solution {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed #e2e8f0;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #166534;
-    font-weight: 600;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-}
-
 /* ==========================================================================
-   RIGHT COLUMN: AUTH CARD
+   RIGHT COLUMN: AUTH CARD (MATCHING LOGO DESIGN & COLORS)
    ========================================================================== */
 .auth-card-panel {
     width: 100%;
@@ -238,105 +211,116 @@ body {
 
 .auth-card {
     background: #ffffff;
-    padding: 40px 34px;
-    border-radius: 18px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    padding: 42px 36px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 18px 45px rgba(11, 37, 69, 0.08);
     text-align: left;
 }
 
 .auth-card h2 {
-    font-size: 28px;
+    font-family: var(--font-brand);
+    font-size: 30px;
     font-weight: 800;
     margin-bottom: 6px;
-    color: #0f172a;
-    letter-spacing: -0.02em;
+    color: var(--brand-navy);
+    letter-spacing: -0.025em;
 }
 
 .auth-card > p {
-    color: #64748b;
+    font-family: var(--font-brand);
+    color: var(--text-muted);
     font-size: 14.5px;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 }
 
 .auth-card label {
+    font-family: var(--font-brand);
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
     font-size: 13.5px;
     font-weight: 600;
-    color: #334155;
+    color: var(--brand-navy);
 }
 
 .auth-card input[type="text"],
 .auth-card input[type="email"],
 .auth-card input[type="password"] {
+    font-family: var(--font-brand);
     width: 100%;
-    padding: 13px 15px;
-    margin-bottom: 16px;
-    border: 1px solid #cbd5e1;
+    padding: 13px 16px;
+    margin-bottom: 18px;
+    border: 1.5px solid var(--border-input);
     border-radius: 10px;
     font-size: 15px;
     outline: none;
     background: #ffffff;
-    color: #0f172a;
+    color: var(--brand-navy);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .auth-card input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: var(--brand-navy);
+    box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.12);
 }
 
+/* BUTTON MATCHING LOGO NAVY + GREEN HOVER */
 .auth-card button[type="submit"] {
+    font-family: var(--font-brand);
     width: 100%;
-    padding: 13px;
+    padding: 14px;
     border: none;
     border-radius: 10px;
-    background: #2563eb;
-    color: white;
+    background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
+    color: #ffffff;
     font-size: 15.5px;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.05s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(11, 37, 69, 0.25);
     margin-top: 6px;
 }
 
 .auth-card button[type="submit"]:hover {
-    background: #1d4ed8;
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+    background: linear-gradient(135deg, #0e7490 0%, var(--brand-green) 100%);
+    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+    transform: translateY(-1px);
 }
 
 .auth-card button[type="submit"]:active {
-    transform: scale(0.99);
+    transform: translateY(0);
 }
 
 .switch-page {
+    font-family: var(--font-brand);
     margin-top: 22px !important;
     margin-bottom: 0 !important;
     font-size: 14px !important;
-    color: #64748b;
+    color: var(--text-muted);
     text-align: center;
 }
 
 .switch-page a {
-    color: #2563eb;
+    color: var(--brand-green);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    transition: color 0.15s ease;
 }
 
 .switch-page a:hover {
+    color: var(--brand-navy);
     text-decoration: underline;
 }
 
 .message {
+    font-family: var(--font-brand);
     margin-top: 14px;
     text-align: center !important;
     font-size: 13.5px !important;
 }
 
 /* ==========================================================================
-   SCREEN LOADER OVERLAY (HIDDEN UNTIL ACTIVE)
+   SCREEN LOADER OVERLAY
    ========================================================================== */
 .screen-loader-overlay {
     position: fixed;
@@ -356,9 +340,10 @@ body {
 }
 
 .screen-loader-overlay p {
+    font-family: var(--font-brand);
     font-size: 16px;
     font-weight: 600;
-    color: #334155;
+    color: var(--brand-navy);
     margin: 0;
 }
 
@@ -389,10 +374,6 @@ body {
         justify-content: center;
     }
 
-    .auth-highlights {
-        grid-template-columns: 1fr;
-    }
-
     .auth-hero-heading {
         font-size: 27px;
     }
@@ -400,7 +381,7 @@ body {
 
 @media (max-width: 480px) {
     .auth-card {
-        padding: 28px 22px;
+        padding: 30px 22px;
     }
 
     .auth-brand-logo-row img {
