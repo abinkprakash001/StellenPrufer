@@ -178,9 +178,7 @@ body {
 }
 
 .screen-loader-overlay img {
-    height: 64px;
-    width: auto;
-    animation: spinLogo 1s linear infinite;
+    display: none;
 }
 
 .screen-loader-overlay p {

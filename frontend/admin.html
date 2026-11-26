@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StellenPrüfer - Admin</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="main.css?v=20261106_boxhistory">
+    <link rel="stylesheet" href="main.css?v=20261116_simple">
     <style>
         .stats-row {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-bottom: 25px;
+        }
+        @media (max-width: 680px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
         }
         .stat-box {
             background: #ffffff;
@@ -28,11 +33,22 @@
             font-size: 24px;
             color: #111827;
         }
+        .section-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .section-top h2 {
+            margin: 0;
+        }
         table.simple-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 13.5px;
-            margin-top: 12px;
+            margin-top: 8px;
         }
         table.simple-table th,
         table.simple-table td {
@@ -45,16 +61,31 @@
             background: #f9fafb;
             font-weight: 600;
         }
-        .action-btn {
-            padding: 4px 10px;
+        .more-btn {
+            padding: 5px 10px;
             border: 1px solid #d1d5db;
             background: #ffffff;
+            color: #111827;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
         }
-        .action-btn:hover {
+        .more-btn:hover {
             background: #f3f4f6;
+        }
+        .details-row {
+            display: none;
+            background: #f9fafb;
+        }
+        .details-row.open {
+            display: table-row;
+        }
+        .details-box {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -69,8 +100,7 @@
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="profile.html">Profile</a>
+            <a href="index.html">Website</a>
             <a href="admin.html" class="active">Admin</a>
             <button class="logout-btn" onclick="logout()">Sign out</button>
         </nav>
@@ -80,63 +110,21 @@
 
         <div class="stats-row">
             <div class="stat-box">
-                <p>Users</p>
+                <p>Total Users</p>
                 <strong id="statUsers">0</strong>
             </div>
             <div class="stat-box">
-                <p>Total Checks</p>
+                <p>Total Job Checks</p>
                 <strong id="statChecks">0</strong>
             </div>
             <div class="stat-box">
-                <p>Suspicious Checks</p>
+                <p>Suspicious / Review Checks</p>
                 <strong id="statSuspicious">0</strong>
-            </div>
-            <div class="stat-box">
-                <p>Flagged Jobs</p>
-                <strong id="statFlagged">0</strong>
             </div>
         </div>
 
         <section class="history">
-            <h2>Flagged Job Advertisements</h2>
-            <table class="simple-table">
-                <thead>
-                    <tr>
-                        <th>Job &amp; Company</th>
-                        <th>Link / Email</th>
-                        <th>Users Checked</th>
-                        <th>Reason</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="flaggedTableBody">
-                    <tr><td colspan="5">Loading...</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="history">
-            <h2>All Job Checks</h2>
-            <table class="simple-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>User</th>
-                        <th>Job &amp; Company</th>
-                        <th>Result</th>
-                        <th>Users Checked</th>
-                        <th>Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="allChecksTableBody">
-                    <tr><td colspan="7">Loading...</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="history">
-            <h2>Registered Users</h2>
+            <h2>Users Accessing Platform</h2>
             <table class="simple-table">
                 <thead>
                     <tr>
@@ -144,91 +132,69 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>DSGVO Consent</th>
-                        <th>Created</th>
+                        <th>Checks Done</th>
+                        <th>Joined</th>
                     </tr>
                 </thead>
                 <tbody id="usersTableBody">
-                    <tr><td colspan="6">Loading...</td></tr>
+                    <tr><td colspan="6">Loading....</td></tr>
                 </tbody>
             </table>
         </section>
 
+        <section class="history">
+            <div class="section-top">
+                <h2>All Job Checks (Dataset)</h2>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <select id="platformFilterSelect" onchange="resetAndRenderDatasetTable()" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px; background: #ffffff; cursor: pointer;">
+                        <option value="ALL">All Platforms</option>
+                        <option value="Arbeitsagentur">Arbeitsagentur</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="StepStone">StepStone</option>
+                        <option value="Indeed">Indeed</option>
+                        <option value="Stellenanzeigen.de">Stellenanzeigen.de</option>
+                        <option value="Other">Other / Direct</option>
+                    </select>
+                    <select id="customerFilterSelect" onchange="resetAndRenderDatasetTable()" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px; background: #ffffff; cursor: pointer;">
+                        <option value="ALL">All Customers</option>
+                    </select>
+                    <select id="resultFilterSelect" onchange="resetAndRenderDatasetTable()" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px; background: #ffffff; cursor: pointer;">
+                        <option value="ALL">All Results</option>
+                        <option value="LIKELY VALID">LIKELY VALID</option>
+                        <option value="REVIEW CAREFULLY">REVIEW CAREFULLY</option>
+                        <option value="HIGH RISK">HIGH RISK</option>
+                    </select>
+                    <button type="button" class="more-btn" onclick="exportDatasetCsv()">Download Dataset (CSV)</button>
+                </div>
+            </div>
+            <table class="simple-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Result</th>
+                        <th>Date</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="allChecksTableBody">
+                    <tr><td colspan="7">Loading....</td></tr>
+                </tbody>
+            </table>
+            <div id="showMoreWrapper" style="text-align: center; margin-top: 14px; display: none;">
+                <button type="button" id="showMoreBtn" class="more-btn" onclick="showMoreChecks()" style="padding: 8px 18px; font-weight: 600;">
+                    Show More
+                </button>
+            </div>
+        </section>
+
     </main>
 
-    
-    <!-- COMPREHENSIVE FOOTER WITH EXTENSION & QUICK LINKS -->
-    <footer class="site-footer">
-        <div class="site-footer-inner">
-            <div class="footer-columns-grid">
-                <div class="footer-col">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                        <img src="logo.png" alt="StellenPrüfer" style="height: 24px; width: auto; border-radius: 4px;">
-                        <span style="font-size: 15px; font-weight: 600; color: #18181b; letter-spacing: -0.01em;">StellenPrüfer</span>
-                    </div>
-                    <p style="margin: 0; max-width: 420px;">
-                        Verify Before You Trust &mdash; Check job postings, company registrations, and employment contracts before sharing personal data.
-                    </p>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Navigation</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li></li>
-                        <li><a href="profile.html">Profile &amp; History</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Browser Extension</h4>
-                    <ul>
-                        <li><a href="/api/download-extension">Download Chrome Extension (.zip)</a></li>
-                        <li><a href="extension.html">Installation Guide</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom-bar">
-                <div>
-                    StellenPrüfer &copy; 2026 &mdash; Verify Before You Trust
-                </div>
-            </div>
-        </div>
-    </footer>
-
-
     <script>
-        
-        function ensureScreenLoader() {
-            let loader = document.getElementById("screenLoaderOverlay");
-            if (!loader) {
-                loader = document.createElement("div");
-                loader.id = "screenLoaderOverlay";
-                loader.className = "screen-loader-overlay";
-                loader.innerHTML = '<img src="logo.png" alt="Loading"><p>Loading...</p>';
-                document.body.appendChild(loader);
-            }
-            return loader;
-        }
-        function showScreenLoader() { ensureScreenLoader().classList.add("active"); }
-        function hideScreenLoader() {
-            const loader = document.getElementById("screenLoaderOverlay");
-            if (loader) loader.classList.remove("active");
-        }
-        document.addEventListener("DOMContentLoaded", () => {
-            ensureScreenLoader();
-            document.querySelectorAll("a[href]").forEach(link => {
-                const href = link.getAttribute("href");
-                if (href && href.endsWith(".html") && !link.target) {
-                    link.addEventListener("click", e => {
-                        e.preventDefault();
-                        showScreenLoader();
-                        setTimeout(() => { window.location.href = href; }, 400);
-                    });
-                }
-            });
-        });
+        let allDatasetChecks = [];
+        let visibleChecksCount = 10;
 
         function getApiBase() {
             return (window.location.protocol === "file:" || window.location.port !== "5000")
@@ -264,16 +230,20 @@
         }
         function confirmLogout() {
             closeLogoutModal();
-            showScreenLoader();
-            localStorage.removeItem("stellenpruefer_user"); localStorage.removeItem("jobguard_user");
+            localStorage.removeItem("stellenpruefer_user");
+            localStorage.removeItem("jobguard_user");
             fetch(`${getApiBase()}/api/logout`, { method: "POST" }).catch(() => {});
-            setTimeout(() => { window.location.href = "login.html"; }, 350);
+            window.location.href = "login.html";
         }
 
         document.addEventListener("DOMContentLoaded", () => {
             const user = JSON.parse(localStorage.getItem("stellenpruefer_user") || localStorage.getItem("jobguard_user") || "null");
-            if (!user || user.role !== "admin") {
+            if (!user) {
                 window.location.href = "login.html";
+                return;
+            }
+            if (user.role !== "admin") {
+                window.location.href = "index.html";
                 return;
             }
             loadAdminData();
@@ -285,72 +255,230 @@
                 if (!res.ok) return;
                 const data = await res.json();
 
+                allDatasetChecks = data.recent_checks || [];
+
                 document.getElementById("statUsers").textContent = data.stats.total_users;
                 document.getElementById("statChecks").textContent = data.stats.total_checks;
                 document.getElementById("statSuspicious").textContent = data.stats.suspicious_checks;
-                document.getElementById("statFlagged").textContent = data.stats.flagged_fake_jobs_count;
 
-                const flaggedBody = document.getElementById("flaggedTableBody");
-                if (!data.flagged_jobs.length) {
-                    flaggedBody.innerHTML = `<tr><td colspan="5">None</td></tr>`;
-                } else {
-                    flaggedBody.innerHTML = data.flagged_jobs.map(f => `
-                        <tr>
-                            <td>${escapeHtml(f.job_title)} - ${escapeHtml(f.company_name)}</td>
-                            <td>${escapeHtml(f.job_url || f.recruiter_email || "-")}</td>
-                            <td>${f.distinct_users_count} user(s) (${f.total_checks} checks)</td>
-                            <td>${escapeHtml(f.flag_reason)}</td>
-                            <td><button class="action-btn" onclick="updateFlag('${escapeHtml(f.job_fingerprint)}', 'mark_safe')">Unflag</button></td>
-                        </tr>
-                    `).join("");
-                }
-
-                const checksBody = document.getElementById("allChecksTableBody");
-                if (!data.recent_checks.length) {
-                    checksBody.innerHTML = `<tr><td colspan="7">None</td></tr>`;
-                } else {
-                    checksBody.innerHTML = data.recent_checks.map(c => `
-                        <tr>
-                            <td>${c.id}</td>
-                            <td>${escapeHtml(c.user_name)} (${escapeHtml(c.user_email)})</td>
-                            <td>${escapeHtml(c.job_title)} - ${escapeHtml(c.company_name)}</td>
-                            <td>${escapeHtml(c.result)}</td>
-                            <td>${c.distinct_users_count} (${c.is_flagged_fake ? "Flagged" : "Normal"})</td>
-                            <td>${escapeHtml(c.checked_at)}</td>
-                            <td>
-                                ${c.is_flagged_fake
-                                    ? `<button class="action-btn" onclick="updateFlag('${escapeHtml(c.job_fingerprint)}', 'mark_safe')">Unflag</button>`
-                                    : `<button class="action-btn" onclick="updateFlag('${escapeHtml(c.job_fingerprint)}', 'confirm_scam')">Flag</button>`
-                                }
-                            </td>
-                        </tr>
-                    `).join("");
-                }
+                // Count checks per user
+                const checksByUser = {};
+                allDatasetChecks.forEach(c => {
+                    const key = (c.user_email || "").toLowerCase();
+                    if (key) checksByUser[key] = (checksByUser[key] || 0) + 1;
+                });
 
                 const usersBody = document.getElementById("usersTableBody");
-                usersBody.innerHTML = data.users.map(u => `
-                    <tr>
-                        <td>${u.id}</td>
-                        <td>${escapeHtml(u.name)}</td>
-                        <td>${escapeHtml(u.email)}</td>
-                        <td>${escapeHtml(u.role)}</td>
-                        <td>${u.gdpr_consent ? "Yes" : "No"}</td>
-                        <td>${escapeHtml(u.created_at)}</td>
-                    </tr>
-                `).join("");
+                usersBody.innerHTML = data.users.map(u => {
+                    const cnt = checksByUser[(u.email || "").toLowerCase()] || 0;
+                    return `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${escapeHtml(u.name)}</td>
+                            <td>${escapeHtml(u.email)}</td>
+                            <td>${escapeHtml(u.role)}</td>
+                            <td><strong>${cnt}</strong></td>
+                            <td>${escapeHtml(u.created_at)}</td>
+                        </tr>
+                    `;
+                }).join("");
+
+                // Populate Customer Dropdown (without numbers)
+                const custSelect = document.getElementById("customerFilterSelect");
+                if (custSelect) {
+                    const seenCustomers = new Map();
+                    (data.users || []).forEach(u => {
+                        if (u.email && u.role !== "admin") {
+                            seenCustomers.set(u.email.toLowerCase(), `${u.name || "User"} (${u.email})`);
+                        }
+                    });
+                    allDatasetChecks.forEach(c => {
+                        const em = (c.user_email || "").toLowerCase();
+                        if (em && !seenCustomers.has(em)) {
+                            seenCustomers.set(em, `${c.user_name || "User"} (${c.user_email})`);
+                        }
+                    });
+                    custSelect.innerHTML = `<option value="ALL">All Customers</option>` +
+                        Array.from(seenCustomers.entries()).map(([em, label]) => {
+                            return `<option value="${escapeHtml(em)}">${escapeHtml(label)}</option>`;
+                        }).join("");
+                }
+
+                // Populate Platform Dropdown (without numbers)
+                const platSelect = document.getElementById("platformFilterSelect");
+                if (platSelect) {
+                    platSelect.innerHTML = `
+                        <option value="ALL">All Platforms</option>
+                        <option value="Arbeitsagentur">Arbeitsagentur</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="StepStone">StepStone</option>
+                        <option value="Indeed">Indeed</option>
+                        <option value="Stellenanzeigen.de">Stellenanzeigen.de</option>
+                        <option value="Other">Other / Direct</option>
+                    `;
+                }
+
+                // Populate Result Dropdown (without numbers)
+                const resSelect = document.getElementById("resultFilterSelect");
+                if (resSelect) {
+                    resSelect.innerHTML = `
+                        <option value="ALL">All Results</option>
+                        <option value="LIKELY VALID">LIKELY VALID</option>
+                        <option value="REVIEW CAREFULLY">REVIEW CAREFULLY</option>
+                        <option value="HIGH RISK">HIGH RISK</option>
+                    `;
+                }
+
+                renderDatasetTable();
 
             } catch (e) {
                 console.error(e);
             }
         }
 
-        async function updateFlag(fingerprint, action) {
-            await fetch(`${getApiBase()}/api/admin/flag`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ job_fingerprint: fingerprint, action })
+        function getDomainFromCheck(c) {
+            if (c.domain) return c.domain;
+            if (c.job_url) {
+                try {
+                    return new URL(c.job_url).hostname.replace(/^www\./, "");
+                } catch (e) {}
+            }
+            return "";
+        }
+
+        function detectPlatformName(c) {
+            const str = `${c.job_url || ""} ${c.domain || ""}`.toLowerCase();
+            if (str.includes("arbeitsagentur")) return "Arbeitsagentur";
+            if (str.includes("linkedin")) return "LinkedIn";
+            if (str.includes("stepstone")) return "StepStone";
+            if (str.includes("indeed")) return "Indeed";
+            if (str.includes("stellenanzeigen")) return "Stellenanzeigen.de";
+            return "Other";
+        }
+
+        function getFilteredChecks() {
+            const platVal = document.getElementById("platformFilterSelect")?.value || "ALL";
+            const custVal = (document.getElementById("customerFilterSelect")?.value || "ALL").toLowerCase();
+            const resVal = (document.getElementById("resultFilterSelect")?.value || "ALL").toUpperCase();
+
+            return allDatasetChecks.filter(c => {
+                if (platVal !== "ALL" && detectPlatformName(c) !== platVal) return false;
+                if (custVal !== "all" && (c.user_email || "").toLowerCase() !== custVal) return false;
+                if (resVal !== "ALL" && (c.result || "").toUpperCase() !== resVal) return false;
+                return true;
             });
-            loadAdminData();
+        }
+
+        function resetAndRenderDatasetTable() {
+            visibleChecksCount = 10;
+            renderDatasetTable();
+        }
+
+        function showMoreChecks() {
+            const filtered = getFilteredChecks();
+            if (visibleChecksCount >= filtered.length) {
+                visibleChecksCount = 10;
+            } else {
+                visibleChecksCount += 10;
+            }
+            renderDatasetTable();
+        }
+
+        function renderDatasetTable() {
+            const checksBody = document.getElementById("allChecksTableBody");
+            const showMoreWrap = document.getElementById("showMoreWrapper");
+            const showMoreBtn = document.getElementById("showMoreBtn");
+            const filtered = getFilteredChecks();
+
+            if (!filtered.length) {
+                checksBody.innerHTML = `<tr><td colspan="7">No matching checks found for the selected filter.</td></tr>`;
+                if (showMoreWrap) showMoreWrap.style.display = "none";
+                return;
+            }
+
+            const visibleSlice = filtered.slice(0, visibleChecksCount);
+
+            if (showMoreWrap && showMoreBtn) {
+                if (filtered.length > 10) {
+                    showMoreWrap.style.display = "block";
+                    if (visibleChecksCount >= filtered.length) {
+                        showMoreBtn.textContent = `Show Less (Showing all ${filtered.length})`;
+                    } else {
+                        showMoreBtn.textContent = `Show More (${visibleSlice.length} of ${filtered.length} shown)`;
+                    }
+                } else {
+                    showMoreWrap.style.display = "none";
+                }
+            }
+
+            checksBody.innerHTML = visibleSlice.map(c => `
+                <tr>
+                    <td>${c.id}</td>
+                    <td>${escapeHtml(c.user_name || "Guest")}<br><span style="color:#6b7280;font-size:12px;">${escapeHtml(c.user_email || "")}</span></td>
+                    <td>${escapeHtml(c.job_title)}</td>
+                    <td>${escapeHtml(c.company_name)}</td>
+                    <td><strong>${escapeHtml(c.result)}</strong></td>
+                    <td>${escapeHtml(c.checked_at)}</td>
+                    <td>
+                        <button type="button" class="more-btn" onclick="toggleDetails(${c.id})">Click for more</button>
+                    </td>
+                </tr>
+                <tr id="details-${c.id}" class="details-row">
+                    <td colspan="7">
+                        <div class="details-box">
+                            <div><strong>Platform / Domain:</strong> ${escapeHtml(detectPlatformName(c))} ${getDomainFromCheck(c) ? `(${escapeHtml(getDomainFromCheck(c))})` : ""}</div>
+                            <div><strong>Location:</strong> ${escapeHtml(c.company_address || "Not specified")} &middot; <strong>Salary:</strong> ${escapeHtml(c.salary || "Not specified")}</div>
+                            <div><strong>Job URL:</strong> ${c.job_url ? `<a href="${escapeHtml(c.job_url)}" target="_blank">${escapeHtml(c.job_url)}</a>` : "Not provided"}</div>
+                            <div><strong>Recruiter Email:</strong> ${escapeHtml(c.recruiter_email || "Not provided")}</div>
+                            <div><strong>Reason:</strong> ${escapeHtml(c.reason || "-")}</div>
+                            <div><strong>Warning Count:</strong> ${(c.warnings && c.warnings.length) ? c.warnings.length : 0}${(c.warnings && c.warnings.length) ? ` — ${escapeHtml(c.warnings.join(" | "))}` : ""}</div>
+                            <div style="margin-top: 6px;">
+                                <a href="result.html?checkId=${c.id}" class="more-btn">Open Full Report Page &rarr;</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        function toggleDetails(id) {
+            const row = document.getElementById(`details-${id}`);
+            if (row) row.classList.toggle("open");
+        }
+
+        function exportDatasetCsv() {
+            const targetRows = getFilteredChecks();
+            if (!targetRows.length) return;
+            const headers = [
+                "ID", "User_Name", "User_Email", "Platform", "Domain",
+                "Job_Title", "Company_Name", "Location", "Salary",
+                "Job_URL", "Recruiter_Email", "Result", "Warning_Count", "Reason", "Checked_At"
+            ];
+            const rows = targetRows.map(c => [
+                c.id,
+                `"${(c.user_name || "").replace(/"/g, '""')}"`,
+                `"${(c.user_email || "").replace(/"/g, '""')}"`,
+                `"${detectPlatformName(c)}"`,
+                `"${getDomainFromCheck(c).replace(/"/g, '""')}"`,
+                `"${(c.job_title || "").replace(/"/g, '""')}"`,
+                `"${(c.company_name || "").replace(/"/g, '""')}"`,
+                `"${(c.company_address || "").replace(/"/g, '""')}"`,
+                `"${(c.salary || "").replace(/"/g, '""')}"`,
+                `"${(c.job_url || "").replace(/"/g, '""')}"`,
+                `"${(c.recruiter_email || "").replace(/"/g, '""')}"`,
+                `"${(c.result || "").replace(/"/g, '""')}"`,
+                (c.warnings && Array.isArray(c.warnings)) ? c.warnings.length : 0,
+                `"${(c.reason || "").replace(/"/g, '""')}"`,
+                `" ${(c.checked_at || "").replace(/"/g, '""')}"`
+            ]);
+            const csv = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\r\n");
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "stellenpruefer_dataset.csv";
+            a.click();
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>

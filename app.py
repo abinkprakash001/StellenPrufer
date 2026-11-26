@@ -17,8 +17,14 @@ import sys
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.join(PROJECT_DIR, "backend")
 FRONTEND_DIR = os.path.join(PROJECT_DIR, "frontend")
-DATA_DIR = os.path.join(PROJECT_DIR, "data")
-os.makedirs(DATA_DIR, exist_ok=True)
+if os.environ.get("VERCEL"):
+    DATA_DIR = "/tmp"
+else:
+    DATA_DIR = os.path.join(PROJECT_DIR, "data")
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+    except Exception:
+        pass
 sys.path.insert(0, BACKEND_DIR)
 from flask import Flask, request, jsonify, send_from_directory, send_file, redirect
 from flask_cors import CORS
@@ -210,6 +216,12 @@ def register_page():
 @app.route("/main.html")
 def main_page():
     return redirect("/")
+
+
+@app.route("/about")
+@app.route("/about.html")
+def about_page():
+    return send_from_directory(FRONTEND_DIR, "about.html")
 
 
 @app.route("/extension.html")
@@ -1636,6 +1648,29 @@ def api_admin_flag():
 
     update_job_flag_status(fingerprint, action)
     return jsonify({"success": True})
+
+
+@app.route("/api/admin/delete-user", methods=["POST"])
+def api_admin_delete_user():
+    payload = request.get_json(silent=True) or {}
+    user_id = payload.get("user_id")
+    if not user_id:
+        return jsonify({"success": False, "error": "Missing user_id"}), 400
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT role FROM users WHERE id = ?", (int(user_id),))
+        row = cur.fetchone()
+        if row and row["role"] == "admin":
+            conn.close()
+            return jsonify({"success": False, "error": "Cannot delete admin account."}), 400
+        conn.execute("DELETE FROM job_checks WHERE user_id = ?", (int(user_id),))
+        conn.execute("DELETE FROM users WHERE id = ?", (int(user_id),))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 @app.route("/api/company-profile", methods=["GET"])

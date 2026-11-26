@@ -13,8 +13,7 @@ function ensureScreenLoader() {
         loader.id = "screenLoaderOverlay";
         loader.className = "screen-loader-overlay";
         loader.innerHTML = `
-            <img src="logo.png" alt="Loading">
-            <p>Loading...</p>
+            <p>Loading....</p>
         `;
         document.body.appendChild(loader);
     }

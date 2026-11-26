@@ -342,7 +342,7 @@ async function runVerification(payload, tabInfo) {
 
   if (loaderBox) loaderBox.style.display = "block";
 
-  if (loaderMsg) loaderMsg.textContent = "Verifying job details...";
+  if (loaderMsg) loaderMsg.textContent = "Loading....";
 
   if (scoreCard) scoreCard.style.display = "none";
 

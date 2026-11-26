@@ -283,26 +283,18 @@
     }
 
     .loader img {
-
-      width: 34px;
-
-      height: 34px;
-
-      border-radius: 50%;
-
-      animation: spin 1.1s linear infinite;
-
+      display: none;
     }
 
     .loader p {
 
-      font-size: 12px;
+      font-size: 14px;
 
       font-weight: 500;
 
       color: #52525b;
 
-      margin-top: 8px;
+      margin-top: 0;
 
     }
 
@@ -924,9 +916,7 @@
 
     <div id="loaderBox" class="loader card">
 
-      <img src="logo.png" alt="Loading">
-
-      <p id="loaderMessage">verifying the job.....</p>
+      <p id="loaderMessage">Loading....</p>
 
     </div>
 
@@ -1113,11 +1103,11 @@
 
 
 
-    <!-- 1. Verification Job Advertisement: 4-Pillar Intelligence Audit -->
+    <!-- 1. Verification Job Advertisement: Quick Overview -->
 
     <div class="card" id="dFourPillarsCard" style="display: none; padding: 10px 12px;">
 
-      <div class="section-title" style="margin-bottom: 8px;">Multi-Pillar Intelligence Audit</div>
+      <div class="section-title" style="margin-bottom: 8px;">Quick Overview</div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px;">
 
@@ -1288,55 +1278,6 @@
       </div>
 
     </div>
-
-
-
-    <!-- 4. Resume Things: Candidate Resume Match & Skills Comparison -->
-
-    <div class="card" id="dResumeFitCard" style="display: none;">
-
-      <div class="section-title">
-
-        <span>Skills Comparison</span>
-
-        <span id="dFitScoreBadge" style="font-family: Consolas, "Courier New", monospace; font-size: 10.5px; font-weight: 600; background: #dcfce7; color: #166534; padding: 2px 7px; border-radius: 4px; border: 1px solid #bbf7d0;">--% Match</span>
-
-      </div>
-
-
-
-      <!-- Career Focus Advisory Banner if Warehouse or Mismatch -->
-
-      <div id="dCareerAdvisoryBox" style="display: none; padding: 10px 12px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; margin-bottom: 9px; font-size: 11.5px; line-height: 1.45; color: #92400e;">
-
-        <div style="font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 4px; margin-bottom: 3px;">
-
-          <span>⚠️</span> Career Note: Different Field than Your Resume
-
-        </div>
-
-        <p id="dCareerAdvisoryMsg" style="margin: 0; color: #78350f;"></p>
-
-      </div>
-
-
-
-      <!-- Matched Skills Badges -->
-
-      <div id="dMatchedSkillsSection" style="margin-bottom: 8px;">
-
-        <div style="font-size: 11px; font-weight: 600; color: #166534; margin-bottom: 4px;">Skills You Have:</div>
-
-        <div id="dMatchedSkillsPills" style="display: flex; flex-wrap: wrap; gap: 4px;"></div>
-
-      </div>
-
-
-
-      <!-- Granular Match Reasons -->
-
-      <div id="dWhyMatchedList" style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 8px;"></div>
-</div>
 
 
 

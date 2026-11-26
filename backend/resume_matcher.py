@@ -16,11 +16,13 @@ TECH_SKILLS = [
     "sql", "postgresql", "mysql", "mongodb", "redis", "oracle", "react", "angular", "vue",
     "next.js", "node.js", "django", "flask", "fastapi", "spring boot", "laravel", "bootstrap",
     "html5", "css3", "docker", "kubernetes", "aws", "azure", "gcp", "terraform", "ci/cd",
-    "git", "linux", "bash", "rest apis", "restful apis", "api integration", "json",
+    "git", "linux", "bash", "windows", "powershell", "microsoft office",
+    "rest apis", "restful apis", "api integration", "json",
     "machine learning", "deep learning", "nlp", "pandas", "numpy", "scikit-learn", "tensorflow",
     "pytorch", "data science", "cybersecurity", "threat detection", "penetration testing",
     "wireshark", "siem", "phishing detection", "network security", "unit testing", "agile", "scrum",
-    "anwendungsentwicklung", "softwareentwicklung", "webentwicklung", "fachinformatik"
+    "it-support", "technical support", "troubleshooting", "hardware", "netzwerk",
+    "anwendungsentwicklung", "softwareentwicklung", "webentwicklung", "fachinformatik", "systemintegration"
 ]
 
 HR_RECRUITING_SKILLS = [
@@ -273,7 +275,9 @@ def detect_domain(text, job_title=""):
             "systemintegration", "software", "softwareentwicklung", "softwareentwickler", "developer",
             "entwickler", "engineer", "programmierer", "programmierung", "webentwicklung",
             "webentwickler", "frontend", "backend", "full stack", "fullstack", "devops",
-            "informatik", "data scientist", "data engineer", "cybersecurity", "it"
+            "informatik", "data scientist", "data engineer", "cybersecurity", "it",
+            "technischen support", "technischer support", "1st level support", "2nd level support",
+            "first level support", "helpdesk", "systemadministrator", "administrator"
         ]
         if any(re.search(rf"\b{re.escape(p)}\b", clean_title) for p in title_tech):
             return "TECH"
@@ -334,31 +338,66 @@ def match_resume_to_job(resume_text="", job_description="", job_title=""):
     resume_skills = extract_skills(clean_resume)
     job_skills = extract_skills(clean_job)
 
-    # Also infer core tech skills from German software/apprenticeship descriptions if not explicitly tokenized
-    if any(k in clean_job for k in ["anwendungsentwicklung", "fachinformatiker", "web anwendungen", "webanwendungen", "programmiersprachen"]):
+    resume_domain = detect_domain(clean_resume)
+    job_domain = detect_domain(clean_job, job_title=job_title or "")
+
+    # Cross-language (German <-> English) skill equivalence for IT Support & Software roles
+    is_it_support_role = any(k in clean_job for k in [
+        "technischen support", "technischer support", "1st level", "2nd level",
+        "first level", "it support", "helpdesk", "service desk", "anwendersupport",
+        "systemintegration", "störungsbeseitigung", "fehleranalyse"
+    ])
+    if is_it_support_role:
+        for sup_s in ["it-support", "troubleshooting", "windows", "microsoft office"]:
+            if sup_s not in job_skills:
+                job_skills.append(sup_s)
+            if resume_domain == "TECH" and sup_s not in resume_skills:
+                resume_skills.append(sup_s)
+
+    if any(k in clean_job for k in ["netzwerk", "tcp ip", "dns", "dhcp", "firewall", "it sicherheit"]):
+        if "network security" not in job_skills and "cybersecurity" in resume_skills:
+            job_skills.append("cybersecurity")
+
+    if any(k in clean_job for k in ["datenbank", "datenbanken", "sql"]):
+        if "sql" not in job_skills:
+            job_skills.append("sql")
+        if ("mysql" in resume_skills or "sql" in clean_resume) and "sql" not in resume_skills:
+            resume_skills.append("sql")
+
+    # Infer core tech skills from German software/apprenticeship descriptions
+    if any(k in clean_job for k in ["anwendungsentwicklung", "fachinformatiker", "web anwendungen", "webanwendungen", "programmiersprachen", "softwareentwicklung"]):
         for implied_skill in ["javascript", "php", "python", "html5", "css3", "sql"]:
             if implied_skill in resume_skills and implied_skill in clean_job and implied_skill not in job_skills:
                 job_skills.append(implied_skill)
-        # If the job description was truncated on a search page and only the title was captured for Fachinformatiker Anwendungsentwicklung
-        if not job_skills and any(k in clean_title for k in ["anwendungsentwicklung", "fachinformatiker"]):
+        if not job_skills and any(k in clean_title for k in ["anwendungsentwicklung", "fachinformatiker", "software", "entwickler", "it"]):
             for core_s in ["javascript", "php", "python", "html5", "css3"]:
                 if core_s in resume_skills:
                     job_skills.append(core_s)
 
-    job_skills = sorted(list(set(job_skills)))
+    # Remove incidental commercial/HR company-description words (like "vertrieb") from TECH jobs unless the title is a Sales/HR role
+    if job_domain == "TECH" and not any(s in clean_title for s in ["vertrieb", "sales", "account", "kaufmännisch", "recruiter", "personal"]):
+        job_skills = [s for s in job_skills if s not in COMMERCIAL_SALES_SKILLS and s not in HR_RECRUITING_SKILLS]
 
-    resume_domain = detect_domain(clean_resume)
-    job_domain = detect_domain(clean_job, job_title=job_title or "")
+    # If a TECH job still has no extracted taxonomy tokens, infer matches from the candidate's core tech stack
+    if job_domain == "TECH" and resume_domain == "TECH" and not job_skills:
+        for fallback_s in ["python", "javascript", "html5", "css3", "git", "windows", "microsoft office"]:
+            if fallback_s in resume_skills or fallback_s in clean_resume:
+                job_skills.append(fallback_s)
+                if fallback_s not in resume_skills:
+                    resume_skills.append(fallback_s)
+
+    job_skills = sorted(list(set(job_skills)))
+    resume_skills = sorted(list(set(resume_skills)))
 
     try:
         raw_sim = _pure_cosine_similarity(clean_resume, clean_job)
     except Exception:
         raw_sim = 0.0
 
-    fit_score = min(95.0, max(5.0, round(raw_sim * 140.0, 1)))
+    fit_score = min(95.0, max(15.0, round(raw_sim * 140.0, 1)))
 
     # Filter out generic German category labels from missing_skills if specific programming languages are already matched
-    generic_meta_skills = {"anwendungsentwicklung", "softwareentwicklung", "webentwicklung", "fachinformatik"}
+    generic_meta_skills = {"anwendungsentwicklung", "softwareentwicklung", "webentwicklung", "fachinformatik", "systemintegration"}
     matched_skills = [s for s in job_skills if s in resume_skills]
     for meta_s in generic_meta_skills:
         if meta_s in job_skills and resume_domain == "TECH" and meta_s not in matched_skills:
@@ -425,9 +464,15 @@ def match_resume_to_job(resume_text="", job_description="", job_title=""):
                 f"Your CV already demonstrates a {deg_name} in Computer Science and hands-on proficiency in {matched_display}, which directly cover and exceed the apprenticeship curriculum ((Fach-)Abitur + initial programming knowledge). "
                 f"You are well-qualified for this training role and also eligible to apply directly for Junior Software Developer or Full-Stack Engineer positions."
             )
-        elif matched_skills:
+        elif matched_skills or (resume_domain == "TECH" and job_domain == "TECH"):
+            total_req = len(matched_skills) + len(missing_skills)
+            if total_req > 0:
+                ratio_score = (len(matched_skills) / total_req) * 88.0
+            else:
+                ratio_score = 75.0
             skill_boost = min(45.0, len(matched_skills) * 12.0)
-            fit_score = min(98.0, round(max(fit_score, 45.0 + skill_boost), 1))
+            base_tech_floor = 72.0 if (resume_domain == "TECH" and job_domain == "TECH" and len(missing_skills) <= 1) else 50.0
+            fit_score = min(96.0, round(max(fit_score, ratio_score, 45.0 + skill_boost, base_tech_floor), 1))
 
     # Universal Trap Detection
     has_zero_requirements = len(job_skills) == 0 and len(clean_job.split()) >= 15

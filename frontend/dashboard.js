@@ -38,9 +38,7 @@ function ensureScreenLoader() {
 
         loader.innerHTML = `
 
-            <img src="logo.png" alt="Loading">
-
-            <p>Loading...</p>
+            <p>Loading....</p>
 
         `;
 
@@ -566,10 +564,23 @@ function applyUserToPage(user) {
 
     const adminNavLink = document.getElementById("adminNavLink");
 
-    if (adminNavLink && user.role === "admin") {
-
-        adminNavLink.style.display = "inline-block";
-
+    if (user.role === "admin") {
+        if (adminNavLink) {
+            adminNavLink.style.display = "inline-block";
+        }
+        // Hide customer Profile link when logged in as Admin
+        document.querySelectorAll('header.topbar nav a[href="profile.html"]').forEach(el => {
+            el.style.display = "none";
+        });
+        // If Admin navigated to profile.html, redirect to admin.html
+        if (window.location.pathname.endsWith("profile.html")) {
+            window.location.href = "admin.html";
+            return;
+        }
+    } else {
+        if (adminNavLink) {
+            adminNavLink.style.display = "none";
+        }
     }
 
     const nameInput = document.getElementById("profileName");
@@ -3458,13 +3469,26 @@ function toggleHistoryItemDetails(idx) {
 
 }
 
+function detectUserHistoryPlatform(item) {
+    const str = `${item.job_url || ""} ${item.domain || ""}`.toLowerCase();
+    if (str.includes("arbeitsagentur")) return "Arbeitsagentur";
+    if (str.includes("linkedin")) return "LinkedIn";
+    if (str.includes("stepstone")) return "StepStone";
+    if (str.includes("indeed")) return "Indeed";
+    if (str.includes("stellenanzeigen")) return "Stellenanzeigen.de";
+    return "Other";
+}
+
+function filterUserHistory() {
+    _showAllHistory = false;
+    renderHistory(_cachedUserHistory);
+}
+
 function renderHistory(history) {
 
     _cachedUserHistory = history || [];
 
     const container = document.getElementById("historyList");
-
-    const countLabel = document.getElementById("historyCountLabel");
 
     const showMoreContainer = document.getElementById("historyShowMoreContainer");
 
@@ -3472,15 +3496,18 @@ function renderHistory(history) {
 
     if (!container) return;
 
-    if (countLabel) {
+    const platVal = document.getElementById("userPlatformFilterSelect")?.value || "ALL";
+    const resVal = (document.getElementById("userResultFilterSelect")?.value || "ALL").toUpperCase();
 
-        countLabel.textContent = _cachedUserHistory.length > 0 ? `${_cachedUserHistory.length} total checks` : "";
+    const filteredHistory = _cachedUserHistory.filter(item => {
+        if (platVal !== "ALL" && detectUserHistoryPlatform(item) !== platVal) return false;
+        if (resVal !== "ALL" && (item.result || "").toUpperCase() !== resVal) return false;
+        return true;
+    });
 
-    }
+    if (filteredHistory.length === 0) {
 
-    if (_cachedUserHistory.length === 0) {
-
-        container.innerHTML = '<p class="empty-history" style="text-align: center; color: #94a3b8; padding: 30px 0;">No job advertisements have been checked yet.</p>';
+        container.innerHTML = '<p class="empty-history" style="text-align: center; color: #94a3b8; padding: 30px 0;">No matching job searches found.</p>';
 
         if (showMoreContainer) showMoreContainer.style.display = "none";
 
@@ -3490,9 +3517,9 @@ function renderHistory(history) {
 
     const visibleItems = _showAllHistory
 
-        ? _cachedUserHistory
+        ? filteredHistory
 
-        : _cachedUserHistory.slice(0, INITIAL_HISTORY_LIMIT);
+        : filteredHistory.slice(0, INITIAL_HISTORY_LIMIT);
 
     container.innerHTML = visibleItems.map((item, idx) => {
 
@@ -3635,7 +3662,7 @@ function renderHistory(history) {
 
     if (showMoreContainer && showMoreBtn) {
 
-        if (_cachedUserHistory.length > INITIAL_HISTORY_LIMIT) {
+        if (filteredHistory.length > INITIAL_HISTORY_LIMIT) {
 
             showMoreContainer.style.display = "block";
 
@@ -3643,7 +3670,7 @@ function renderHistory(history) {
 
                 ? "Show Less"
 
-                : `Show More (${_cachedUserHistory.length - INITIAL_HISTORY_LIMIT} more)`;
+                : "Show More";
 
         } else {
 

@@ -129,11 +129,20 @@ def clean_company_name_for_domain(company_name):
         clean = re.sub(r"[^a-z0-9]", "", raw).strip()
         hyphen = re.sub(r"[^a-z0-9]+", "-", raw).strip("-")
 
+    # Extract primary brand word (first word >= 3 chars, e.g. 'rewe' from 'REWE Markt GmbH')
+    words = [w for w in re.findall(r"[a-z0-9]{3,}", stripped) if w not in ("markt", "dienstleistung", "logistik", "service", "services", "digital", "solutions", "personal", "handel", "retail", "international", "global", "europe")]
+    brand_word = words[0] if words else ""
+
     candidates = list(candidates_priority)
     if hyphen and hyphen != clean:
-        candidates.extend([f"{hyphen}.de", f"{clean}.de", f"{hyphen}.com", f"{clean}.com"])
+        candidates.extend([f"{hyphen}.de", f"{clean}.de"])
+        if brand_word and brand_word != clean:
+            candidates.extend([f"{brand_word}.de", f"{brand_word}.com"])
+        candidates.extend([f"{hyphen}.com", f"{clean}.com"])
     elif clean:
         candidates.extend([f"{clean}.de", f"{clean}.com", f"{clean}-group.com", f"{clean}-gruppe.de", f"{clean}.eu"])
+        if brand_word and brand_word != clean:
+            candidates.extend([f"{brand_word}.de", f"{brand_word}.com"])
 
     seen = set()
     result = []
@@ -158,10 +167,18 @@ def probe_url(url, timeout=3.5):
         return (False, None, "")
 
 
+THIRD_PARTY_JOB_BOARDS = (
+    "linkedin.", "stepstone.", "indeed.", "arbeitsagentur.de", "stellenanzeigen.de",
+    "xing.", "glassdoor.", "monster.", "jobleads.", "meinestadt.de", "kimeta.de",
+    "jobware.de", "jobvector.de", "heyjobs.co", "join.com", "personio.", "workday",
+    "softgarden.io", "recruitee.com", "smartrecruiters.com", "greenhouse.io", "127.0.0.1", "localhost"
+)
+
+
 def discover_customer_website(company_name, job_url=None):
     """Find the live official website of the employer using parallel probing and caching."""
-    cache_key = (company_name or "").strip().lower()
-    if cache_key in _DISCOVER_CACHE:
+    cache_key = f"{(company_name or '').strip().lower()}|{(job_url or '').strip().lower()[:60]}"
+    if cache_key in _DISCOVER_CACHE and _DISCOVER_CACHE[cache_key] is not None:
         return _DISCOVER_CACHE[cache_key]
 
     raw_name = (company_name or "").lower().strip()
@@ -176,7 +193,27 @@ def discover_customer_website(company_name, job_url=None):
             _DISCOVER_CACHE[cache_key] = res_known
             return res_known
 
-    candidates = clean_company_name_for_domain(company_name)[:4]
+    # If job_url is directly hosted on the employer's own domain or career subdomain (e.g. karriere.rewe.de)
+    if job_url and job_url.startswith(("http://", "https://")):
+        try:
+            parsed_j = urllib.parse.urlparse(job_url)
+            j_host = (parsed_j.netloc or "").lower().replace("www.", "")
+            if j_host and not any(b in j_host for b in THIRD_PARTY_JOB_BOARDS):
+                host_parts = j_host.split(".")
+                root_dom = ".".join(host_parts[-2:]) if len(host_parts) >= 2 else j_host
+                res_direct = {
+                    "website_url": f"https://www.{root_dom}",
+                    "domain": root_dom,
+                    "career_page_url": f"https://{j_host}",
+                    "ats_url": job_url,
+                    "body_snippet": f"Direct official employer portal {j_host} ({root_dom})."
+                }
+                _DISCOVER_CACHE[cache_key] = res_direct
+                return res_direct
+        except Exception:
+            pass
+
+    candidates = clean_company_name_for_domain(company_name)[:6]
     urls_to_probe = []
     for domain in candidates:
         urls_to_probe.extend([f"https://www.{domain}", f"https://{domain}"])

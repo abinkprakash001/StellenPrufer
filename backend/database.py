@@ -7,12 +7,28 @@ import os
 import re
 import json
 import sqlite3
+import shutil
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(PROJECT_DIR, "data")
-DB_PATH = os.path.join(DATA_DIR, "stellenpruefer.db")
+
+if os.environ.get("VERCEL"):
+    DATA_DIR = "/tmp"
+    DB_PATH = os.path.join(DATA_DIR, "stellenpruefer.db")
+    initial_db = os.path.join(PROJECT_DIR, "data", "stellenpruefer.db")
+    if os.path.exists(initial_db) and not os.path.exists(DB_PATH):
+        try:
+            shutil.copy2(initial_db, DB_PATH)
+        except Exception:
+            pass
+else:
+    DATA_DIR = os.path.join(PROJECT_DIR, "data")
+    DB_PATH = os.path.join(DATA_DIR, "stellenpruefer.db")
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+    except Exception:
+        pass
 
 SUSPICIOUS_RESULTS = {
     "HIGH RISK",
@@ -29,7 +45,10 @@ def dict_factory(cursor, row):
 
 def get_db_connection():
     """Return a thread-safe sqlite3 connection returning dict rows."""
-    os.makedirs(DATA_DIR, exist_ok=True)
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+    except Exception:
+        pass
     conn = sqlite3.connect(DB_PATH, check_same_thread=False, timeout=15.0)
     conn.row_factory = dict_factory
     return conn
@@ -349,35 +368,72 @@ def record_job_check(
 
     is_suspicious = 1 if (result in ("NOT VERIFIED", "HIGH RISK", "INVALID LINK", "COULD NOT VERIFY")) else 0
 
-    cur.execute("""
-        INSERT INTO job_checks (
-            user_id, user_name, user_email, job_fingerprint,
-            job_title, company_name, recruiter_email, job_url,
-            official_job_url, domain, company_address, salary,
-            job_description, result, reason, warnings_json,
-            is_fake_or_suspicious, checked_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        user_id,
-        user_name or "User",
-        user_email or "user@local",
-        fingerprint,
-        job_title or "Job Check",
-        company_name or "Unknown Company",
-        recruiter_email,
-        job_url,
-        official_job_url,
-        domain,
-        company_address,
-        salary,
-        job_description,
-        result,
-        reason,
-        json.dumps(warnings or []),
-        is_suspicious,
-        now_str
-    ))
-    inserted_check_id = cur.lastrowid
+    cur.execute(
+        "SELECT id FROM job_checks WHERE (job_fingerprint = ? OR (LOWER(TRIM(job_title)) = LOWER(TRIM(?)) AND LOWER(TRIM(company_name)) = LOWER(TRIM(?)))) AND LOWER(IFNULL(user_email, '')) = LOWER(IFNULL(?, '')) ORDER BY id DESC LIMIT 1",
+        (fingerprint, job_title or "Job Check", company_name or "Unknown Company", user_email or "som123@gmail.com")
+    )
+    existing_row = cur.fetchone()
+    if existing_row:
+        inserted_check_id = existing_row["id"] if isinstance(existing_row, dict) else existing_row[0]
+        cur.execute("""
+            UPDATE job_checks
+            SET user_id = ?, user_name = ?, user_email = ?, job_fingerprint = ?,
+                job_title = ?, company_name = ?, recruiter_email = ?, job_url = ?,
+                official_job_url = ?, domain = ?, company_address = ?, salary = ?,
+                job_description = ?, result = ?, reason = ?, warnings_json = ?,
+                is_fake_or_suspicious = ?, checked_at = ?
+            WHERE id = ?
+        """, (
+            user_id,
+            user_name or "somanjiji",
+            user_email or "som123@gmail.com",
+            fingerprint,
+            job_title or "Job Check",
+            company_name or "Unknown Company",
+            recruiter_email,
+            job_url,
+            official_job_url,
+            domain,
+            company_address,
+            salary,
+            job_description,
+            result,
+            reason,
+            json.dumps(warnings or []),
+            is_suspicious,
+            now_str,
+            inserted_check_id
+        ))
+    else:
+        cur.execute("""
+            INSERT INTO job_checks (
+                user_id, user_name, user_email, job_fingerprint,
+                job_title, company_name, recruiter_email, job_url,
+                official_job_url, domain, company_address, salary,
+                job_description, result, reason, warnings_json,
+                is_fake_or_suspicious, checked_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            user_id,
+            user_name or "somanjiji",
+            user_email or "som123@gmail.com",
+            fingerprint,
+            job_title or "Job Check",
+            company_name or "Unknown Company",
+            recruiter_email,
+            job_url,
+            official_job_url,
+            domain,
+            company_address,
+            salary,
+            job_description,
+            result,
+            reason,
+            json.dumps(warnings or []),
+            is_suspicious,
+            now_str
+        ))
+        inserted_check_id = cur.lastrowid
 
     cur.execute("""
         SELECT COUNT(*) AS total_checks,
@@ -555,7 +611,8 @@ def get_flagged_fake_jobs(limit=100):
     cur = conn.cursor()
     cur.execute("""
         SELECT * FROM flagged_jobs
-        WHERE is_flagged_fake = 1
+        WHERE (is_flagged_fake = 1 OR latest_result = 'HIGH RISK')
+          AND IFNULL(admin_status, 'auto') != 'marked_safe'
         ORDER BY last_seen_at DESC
         LIMIT ?
     """, (limit,))
@@ -596,7 +653,7 @@ def get_admin_overview():
         FROM job_checks jc
         LEFT JOIN flagged_jobs fj ON jc.job_fingerprint = fj.job_fingerprint
         ORDER BY jc.id DESC
-        LIMIT 100
+        LIMIT 1000
     """)
     all_checks = []
     for r in cur.fetchall():
@@ -610,6 +667,9 @@ def get_admin_overview():
             "company_name": r["company_name"],
             "recruiter_email": r["recruiter_email"],
             "job_url": r["official_job_url"] or r["job_url"],
+            "domain": r["domain"] or "",
+            "company_address": r["company_address"] or "",
+            "salary": r["salary"] or "",
             "result": r["result"],
             "reason": r["reason"],
             "warnings": json.loads(r["warnings_json"] or "[]"),
@@ -625,10 +685,12 @@ def get_admin_overview():
     flagged_jobs = get_flagged_fake_jobs()
 
     cur.execute("SELECT COUNT(*) AS cnt FROM job_checks")
-    total_checks_count = int((cur.fetchone() or [0])[0])
+    row_tot = cur.fetchone() or {}
+    total_checks_count = int(row_tot.get("cnt", 0) if isinstance(row_tot, dict) else row_tot[0])
 
-    cur.execute("SELECT COUNT(*) AS cnt FROM job_checks WHERE is_fake_or_suspicious = 1")
-    suspicious_checks_count = int((cur.fetchone() or [0])[0])
+    cur.execute("SELECT COUNT(*) AS cnt FROM job_checks WHERE is_fake_or_suspicious = 1 OR result IN ('HIGH RISK', 'REVIEW CAREFULLY')")
+    row_sus = cur.fetchone() or {}
+    suspicious_checks_count = int(row_sus.get("cnt", 0) if isinstance(row_sus, dict) else row_sus[0])
 
     conn.close()
 
@@ -656,10 +718,11 @@ def update_job_flag_status(job_fingerprint, action):
             UPDATE flagged_jobs
             SET is_flagged_fake = 1,
                 admin_status = 'confirmed_scam',
-                flag_reason = 'Flagged as a fake job advertisement by administrator.',
+                flag_reason = 'Flagged by administrator.',
                 last_seen_at = ?
             WHERE job_fingerprint = ?
         """, (now_str, job_fingerprint))
+        cur.execute("UPDATE job_checks SET is_fake_or_suspicious = 1, result = 'HIGH RISK' WHERE job_fingerprint = ?", (job_fingerprint,))
     elif action == "mark_safe":
         cur.execute("""
             UPDATE flagged_jobs
@@ -669,6 +732,7 @@ def update_job_flag_status(job_fingerprint, action):
                 last_seen_at = ?
             WHERE job_fingerprint = ?
         """, (now_str, job_fingerprint))
+        cur.execute("UPDATE job_checks SET is_fake_or_suspicious = 0 WHERE job_fingerprint = ?", (job_fingerprint,))
 
     conn.commit()
     conn.close()

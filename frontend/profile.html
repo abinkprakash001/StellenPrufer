@@ -5,7 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StellenPrüfer - Profile &amp; History</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="main.css?v=20261107_v2">
+    <link rel="stylesheet" href="main.css?v=20261116_prof">
+    <style>
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 360px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+            max-width: 1120px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+        .profile-layout section,
+        .profile-layout .history-list,
+        .profile-layout .history-list * {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        @media (max-width: 920px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -20,12 +43,15 @@
 
         <nav>
             <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="extension.html">Extension</a>
             <a href="profile.html" class="active">Profile</a>
+            <a href="admin.html" id="adminNavLink" style="display: none; color: #b91c1c;">Admin</a>
             <button class="logout-btn" onclick="logout()">Sign out</button>
         </nav>
     </header>
 
-    <main class="dashboard" style="display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start; max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+    <main class="dashboard profile-layout">
 
         <!-- LEFT SIDE: RESUME CARD & ACCOUNT SETTINGS (NAME & PASSWORD) -->
         <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -104,12 +130,28 @@
 
         <!-- RIGHT SIDE: PREVIOUS JOB SEARCHES (HISTORY) -->
         <section class="history" id="history" style="margin-bottom: 0; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 8px; padding: 24px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
                 <div>
                     <h2 style="font-size: 20px; font-weight: 600; color: #18181b; margin-bottom: 2px;">Previous Job Searches</h2>
                     <p style="font-size: 13px; color: #71717a; margin: 0;">All job listings and contracts verified from your account.</p>
                 </div>
-                <span id="historyCountLabel" style="font-size: 13px; font-weight: 600; color: #1d4ed8; background: #eff6ff; padding: 4px 10px; border-radius: 12px;"></span>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <select id="userPlatformFilterSelect" onchange="filterUserHistory()" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 13px; background: #ffffff; cursor: pointer;">
+                        <option value="ALL">All Platforms</option>
+                        <option value="Arbeitsagentur">Arbeitsagentur</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="StepStone">StepStone</option>
+                        <option value="Indeed">Indeed</option>
+                        <option value="Stellenanzeigen.de">Stellenanzeigen.de</option>
+                        <option value="Other">Other / Direct</option>
+                    </select>
+                    <select id="userResultFilterSelect" onchange="filterUserHistory()" style="padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 5px; font-size: 13px; background: #ffffff; cursor: pointer;">
+                        <option value="ALL">All Results</option>
+                        <option value="LIKELY VALID">LIKELY VALID</option>
+                        <option value="REVIEW CAREFULLY">REVIEW CAREFULLY</option>
+                        <option value="HIGH RISK">HIGH RISK</option>
+                    </select>
+                </div>
             </div>
 
             <div id="historyList" class="history-list">
@@ -156,12 +198,7 @@
                     </ul>
                 </div>
             </div>
-
-            <div class="footer-bottom-bar">
-                <div>
-                    StellenPrüfer &copy; 2026 &mdash; Verify Before You Trust
-                </div>
-            </div>
+        </div>
         </div>
     </footer>
 
