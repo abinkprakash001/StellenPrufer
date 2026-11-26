@@ -17,6 +17,15 @@ import sys
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.join(PROJECT_DIR, "backend")
 FRONTEND_DIR = os.path.join(PROJECT_DIR, "frontend")
+if not os.path.isdir(FRONTEND_DIR):
+    for candidate in [
+        os.path.join(os.getcwd(), "frontend"),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend"),
+        os.path.join(os.path.dirname(os.getcwd()), "frontend"),
+    ]:
+        if os.path.isdir(candidate):
+            FRONTEND_DIR = candidate
+            break
 if os.environ.get("VERCEL"):
     DATA_DIR = "/tmp"
 else:
@@ -198,8 +207,14 @@ def add_no_cache_headers(response):
 
 @app.route("/")
 @app.route("/index.html")
+@app.route("/api/index")
 def index():
     return send_from_directory(FRONTEND_DIR, "index.html")
+
+
+@app.route("/api/index/<path:filename>")
+def vercel_index_static(filename):
+    return send_from_directory(FRONTEND_DIR, filename)
 
 
 @app.route("/login.html")
