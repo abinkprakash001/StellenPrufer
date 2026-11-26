@@ -1250,9 +1250,13 @@ def api_get_check_result(check_key):
             cur = conn.cursor()
             if str(check_key).isdigit():
                 cur.execute("SELECT * FROM job_checks WHERE id = ?", (int(check_key),))
+                row = cur.fetchone()
+                if not row:
+                    cur.execute("SELECT * FROM job_checks ORDER BY id DESC LIMIT 1")
+                    row = cur.fetchone()
             else:
                 cur.execute("SELECT * FROM job_checks ORDER BY id DESC LIMIT 1")
-            row = cur.fetchone()
+                row = cur.fetchone()
             conn.close()
 
             if row:

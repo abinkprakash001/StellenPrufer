@@ -12,7 +12,9 @@
   "host_permissions": [
     "<all_urls>",
     "http://127.0.0.1:5000/*",
-    "http://localhost:5000/*"
+    "http://localhost:5000/*",
+    "https://stellen-prufer.vercel.app/*",
+    "https://*.vercel.app/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -24,7 +26,9 @@
       ],
       "exclude_matches": [
         "http://127.0.0.1:5000/*",
-        "http://localhost:5000/*"
+        "http://localhost:5000/*",
+        "https://stellen-prufer.vercel.app/*",
+        "https://*.vercel.app/*"
       ],
       "js": [
         "content.js"

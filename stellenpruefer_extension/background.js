@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:5000";
+const API_BASE = "https://stellen-prufer.vercel.app";
 
 // Keep active job tabs in storage so state survives service worker sleep cycles
 async function getActiveJobTabs() {
