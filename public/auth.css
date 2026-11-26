@@ -103,6 +103,24 @@ body {
     font-size: 15px;
     line-height: 1.6;
     color: #475569;
+    margin-bottom: 14px;
+}
+
+.auth-hero-desc strong {
+    color: #0f172a;
+}
+
+.auth-hero-solution {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 16px;
+    background: rgba(22, 163, 74, 0.08);
+    border: 1px solid rgba(22, 163, 74, 0.2);
+    border-radius: 12px;
+    font-size: 13.5px;
+    color: #166534;
+    line-height: 1.5;
     margin-bottom: 22px;
 }
 
