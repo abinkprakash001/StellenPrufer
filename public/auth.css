@@ -140,157 +140,214 @@ body {
     font-weight: 700;
 }
 
-/* MASCOT ILLUSTRATION CARD & MULTI-STAGE ANIMATION */
-.auth-mascot-card {
-    background: #ffffff;
-    border: 1px solid var(--border-light);
-    border-radius: 18px;
-    padding: 16px 18px;
-    box-shadow: 0 8px 24px rgba(11, 37, 69, 0.05);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.auth-mascot-card:hover {
-    box-shadow: 0 12px 28px rgba(11, 37, 69, 0.08);
-}
-
-.auth-mascot-img-wrap.anim-stage {
-    flex-shrink: 0;
-    width: 152px;
-    height: 152px;
-    border-radius: 14px;
-    overflow: hidden;
+/* ==========================================================================
+   30-SECOND AUTOPLAY VIDEO PLAYER CONTAINER (FOOTBALL POST & MESSI)
+   ========================================================================== */
+.auth-video-card {
     background: #0b2545;
-    position: relative;
-    box-shadow: 0 6px 16px rgba(11, 37, 69, 0.12);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(11, 37, 69, 0.15);
+    margin-bottom: 22px;
+    border: 1px solid rgba(11, 37, 69, 0.2);
 }
 
-.anim-frame {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
+.video-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #07192f;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.video-status-indicator {
     display: flex;
     align-items: center;
-    justify-content: center;
-    pointer-events: none;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.anim-frame img {
+.live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+    animation: livePulse 1.5s infinite;
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.video-hd-pill {
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+}
+
+.video-screen-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #020617;
+    overflow: hidden;
+}
+
+.video-screen-wrapper video {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
 }
 
-.anim-label {
+/* Seamless 30s CSS sequence showing Messi kick -> football goalpost wastebin -> celebration */
+.video-fallback-stage {
     position: absolute;
-    bottom: 6px;
-    left: 6px;
-    right: 6px;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.v-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.v-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.v-caption {
+    position: absolute;
+    bottom: 34px;
+    left: 12px;
+    right: 12px;
     background: rgba(11, 37, 69, 0.88);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
     color: #ffffff;
-    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
     font-weight: 700;
-    text-align: center;
-    padding: 3px 4px;
-    border-radius: 6px;
-    letter-spacing: 0.01em;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* 9-second looping keyframe sequence: Kick -> Space Wastebin -> Messi Celebration */
-.frame-kick {
-    animation: kickAnim 9s infinite ease-in-out;
+.v-frame-kick { animation: vKick 30s infinite; }
+.v-frame-goal { animation: vGoal 30s infinite; }
+.v-frame-celebrate { animation: vCelebrate 30s infinite; }
+
+@keyframes vKick {
+    0%, 30% { opacity: 1; transform: scale(1); }
+    33%, 97% { opacity: 0; transform: scale(1.03); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
-.frame-space {
-    animation: spaceAnim 9s infinite ease-in-out;
+@keyframes vGoal {
+    0%, 30% { opacity: 0; transform: scale(1.03); }
+    33%, 63% { opacity: 1; transform: scale(1); }
+    66%, 100% { opacity: 0; transform: scale(1.03); }
 }
 
-.frame-celebrate {
-    animation: celebrateAnim 9s infinite ease-in-out;
+@keyframes vCelebrate {
+    0%, 63% { opacity: 0; transform: scale(1.03); }
+    66%, 97% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.03); }
 }
 
-@keyframes kickAnim {
-    0%, 2% { opacity: 0; transform: scale(0.96); }
-    5%, 28% { opacity: 1; transform: scale(1); }
-    33%, 100% { opacity: 0; transform: scale(1.04); }
-}
-
-@keyframes spaceAnim {
-    0%, 30% { opacity: 0; transform: translateY(10px) scale(0.95); }
-    35%, 61% { opacity: 1; transform: translateY(0) scale(1); }
-    66%, 100% { opacity: 0; transform: translateY(-10px) scale(1.05); }
-}
-
-@keyframes celebrateAnim {
-    0%, 63% { opacity: 0; transform: scale(0.96); }
-    68%, 95% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.04); }
-}
-
-/* ANIMATION PROGRESS DOTS */
-.anim-dots {
+/* Control strip */
+.video-control-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(2, 6, 23, 0.95));
+    padding: 8px 14px 8px;
     display: flex;
-    gap: 6px;
-    margin-top: 8px;
+    align-items: center;
+    gap: 12px;
+    z-index: 5;
 }
 
-.anim-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #cbd5e1;
-    transition: background 0.3s ease;
-}
-
-.anim-dot.d1 { animation: dot1Anim 9s infinite; }
-.anim-dot.d2 { animation: dot2Anim 9s infinite; }
-.anim-dot.d3 { animation: dot3Anim 9s infinite; }
-
-@keyframes dot1Anim {
-    0%, 33% { background: var(--brand-navy); transform: scale(1.2); }
-    34%, 100% { background: #cbd5e1; transform: scale(1); }
-}
-
-@keyframes dot2Anim {
-    0%, 33% { background: #cbd5e1; transform: scale(1); }
-    34%, 66% { background: #0284c7; transform: scale(1.2); }
-    67%, 100% { background: #cbd5e1; transform: scale(1); }
-}
-
-@keyframes dot3Anim {
-    0%, 66% { background: #cbd5e1; transform: scale(1); }
-    67%, 100% { background: var(--brand-green); transform: scale(1.2); }
-}
-
-.auth-mascot-text h3 {
-    font-family: var(--font-brand);
-    font-size: 16px;
+.video-play-state {
+    font-size: 11px;
     font-weight: 700;
+    color: #38bdf8;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.video-timeline-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.video-timeline-fill {
+    height: 100%;
+    width: 0%;
+    background: #22c55e;
+    animation: timelineProgress 30s linear infinite;
+}
+
+@keyframes timelineProgress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+.video-time-counter {
+    font-size: 11px;
+    font-weight: 700;
+    color: #e2e8f0;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.video-footer-info {
+    padding: 16px 18px;
+    background: #ffffff;
+    border-top: 1px solid var(--border-light);
+}
+
+.video-footer-info h3 {
+    font-family: var(--font-brand);
+    font-size: 15.5px;
+    font-weight: 800;
     color: var(--brand-navy);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.auth-mascot-text p {
+.video-footer-info p {
     font-family: var(--font-brand);
     font-size: 13.5px;
-    line-height: 1.45;
     color: var(--text-body);
+    line-height: 1.45;
     margin: 0;
 }
 
