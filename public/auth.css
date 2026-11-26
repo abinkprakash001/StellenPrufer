@@ -140,16 +140,16 @@ body {
     font-weight: 700;
 }
 
-/* MASCOT ILLUSTRATION CARD */
+/* MASCOT ILLUSTRATION CARD & MULTI-STAGE ANIMATION */
 .auth-mascot-card {
     background: #ffffff;
     border: 1px solid var(--border-light);
-    border-radius: 16px;
-    padding: 16px;
+    border-radius: 18px;
+    padding: 16px 18px;
     box-shadow: 0 8px 24px rgba(11, 37, 69, 0.05);
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 20px;
     position: relative;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -159,28 +159,117 @@ body {
     box-shadow: 0 12px 28px rgba(11, 37, 69, 0.08);
 }
 
-.auth-mascot-img-wrap {
+.auth-mascot-img-wrap.anim-stage {
     flex-shrink: 0;
-    width: 140px;
-    height: 140px;
-    border-radius: 12px;
+    width: 152px;
+    height: 152px;
+    border-radius: 14px;
     overflow: hidden;
-    background: #f8fafc;
-    border: 1px solid #f1f5f9;
+    background: #0b2545;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(11, 37, 69, 0.12);
+}
+
+.anim-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
 }
 
-.auth-mascot-img-wrap img {
+.anim-frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    display: block;
 }
 
-.auth-mascot-card:hover .auth-mascot-img-wrap img {
-    transform: scale(1.05);
+.anim-label {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    background: rgba(11, 37, 69, 0.88);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-align: center;
+    padding: 3px 6px;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* 9-second looping keyframe sequence: Kick -> Space Wastebin -> Messi Celebration */
+.frame-kick {
+    animation: kickAnim 9s infinite ease-in-out;
+}
+
+.frame-space {
+    animation: spaceAnim 9s infinite ease-in-out;
+}
+
+.frame-celebrate {
+    animation: celebrateAnim 9s infinite ease-in-out;
+}
+
+@keyframes kickAnim {
+    0%, 2% { opacity: 0; transform: scale(0.96); }
+    5%, 28% { opacity: 1; transform: scale(1); }
+    33%, 100% { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes spaceAnim {
+    0%, 30% { opacity: 0; transform: translateY(10px) scale(0.95); }
+    35%, 61% { opacity: 1; transform: translateY(0) scale(1); }
+    66%, 100% { opacity: 0; transform: translateY(-10px) scale(1.05); }
+}
+
+@keyframes celebrateAnim {
+    0%, 63% { opacity: 0; transform: scale(0.96); }
+    68%, 95% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.04); }
+}
+
+/* ANIMATION PROGRESS DOTS */
+.anim-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.anim-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    transition: background 0.3s ease;
+}
+
+.anim-dot.d1 { animation: dot1Anim 9s infinite; }
+.anim-dot.d2 { animation: dot2Anim 9s infinite; }
+.anim-dot.d3 { animation: dot3Anim 9s infinite; }
+
+@keyframes dot1Anim {
+    0%, 33% { background: var(--brand-navy); transform: scale(1.2); }
+    34%, 100% { background: #cbd5e1; transform: scale(1); }
+}
+
+@keyframes dot2Anim {
+    0%, 33% { background: #cbd5e1; transform: scale(1); }
+    34%, 66% { background: #0284c7; transform: scale(1.2); }
+    67%, 100% { background: #cbd5e1; transform: scale(1); }
+}
+
+@keyframes dot3Anim {
+    0%, 66% { background: #cbd5e1; transform: scale(1); }
+    67%, 100% { background: var(--brand-green); transform: scale(1.2); }
 }
 
 .auth-mascot-text h3 {
