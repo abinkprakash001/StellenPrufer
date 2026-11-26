@@ -40,22 +40,6 @@ function hideScreenLoader() {
 document.addEventListener("DOMContentLoaded", () => {
     ensureScreenLoader();
 
-    // Initialize 30s video timeline counter
-    const timeDisplay = document.getElementById("videoTimeCounter");
-    const video = document.getElementById("mascotStoryVideo");
-    if (timeDisplay) {
-        let sec = 0;
-        setInterval(() => {
-            if (video && !video.paused && !isNaN(video.currentTime)) {
-                sec = Math.floor(video.currentTime) % 30;
-            } else {
-                sec = (sec + 1) % 30;
-            }
-            const s = sec < 10 ? "0" + sec : sec;
-            timeDisplay.textContent = `0:${s} / 0:30`;
-        }, 1000);
-    }
-
     document.querySelectorAll("a[href]").forEach(link => {
         const href = link.getAttribute("href");
         if (href && href.endsWith(".html") && !link.target) {
