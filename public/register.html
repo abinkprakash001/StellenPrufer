@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellenPrüfer - Create Account</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="auth.css">
+</head>
+
+<body class="auth-body">
+
+    <div class="auth-container">
+
+        <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <img src="logo.png" alt="StellenPrüfer Logo" style="height: 36px; width: auto; display: block;">
+            <span>StellenPrüfer</span>
+        </h1>
+
+        <p class="subtitle">
+            Verify a job before you apply
+        </p>
+
+        <div class="auth-card">
+
+            <h2>Create Account</h2>
+
+            <p>Register for a StellenPrüfer account</p>
+
+            <form onsubmit="register(event)">
+
+                <label for="registerName">Full Name</label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+                <label for="registerEmail">Email</label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label for="registerPassword">Password</label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Create a password"
+                    required
+                >
+
+                <div style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 18px; font-size: 13px; color: #374151; line-height: 1.4;">
+                    <input
+                        type="checkbox"
+                        id="gdprConsent"
+                        required
+                        style="width: auto; margin: 3px 0 0 0; padding: 0;"
+                    >
+                    <label for="gdprConsent" style="font-weight: normal; font-size: 12.5px; margin: 0;">
+                        I consent to the storage and processing of my account data and submitted job checks in accordance with the EU GDPR (DSGVO) and German Federal Data Protection Act (BDSG).
+                    </label>
+                </div>
+
+                <button type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="switch-page">
+                Already have an account?
+                <a href="login.html">Sign In</a>
+            </p>
+
+            <p class="switch-page" style="margin-top: 8px !important;">
+                <a href="index.html" style="font-weight: normal; color: #6b7280;">&larr; Back to Home</a>
+            </p>
+
+            <p id="registerMessage" class="message"></p>
+
+        </div>
+
+    </div>
+
+    <script src="auth.js"></script>
+
+</body>
+</html>

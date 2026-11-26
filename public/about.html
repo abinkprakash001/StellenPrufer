@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - StellenPrüfer</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="main.css?v=20261116_5">
+    <style>
+        .stats-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        @media (max-width: 820px) {
+            .stats-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 520px) {
+            .stats-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+        .stat-record-card {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            padding: 16px 18px;
+        }
+        .stat-record-num {
+            font-family: var(--font-mono);
+            font-size: 24px;
+            font-weight: 700;
+            color: #18181b;
+            margin-bottom: 4px;
+        }
+        .stat-record-label {
+            font-size: 13px;
+            color: #3f3f46;
+            line-height: 1.45;
+        }
+        .stat-record-src {
+            font-size: 11.5px;
+            color: #71717a;
+            margin-top: 6px;
+            display: block;
+        }
+        .press-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        @media (max-width: 860px) {
+            .press-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .press-clipping {
+            background: #fafaf9;
+            border: 1px solid #d6d3d1;
+            border-left: 4px solid #18181b;
+            border-radius: 6px;
+            padding: 16px 18px;
+        }
+        .press-paper {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #57534e;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #e7e5e4;
+            padding-bottom: 4px;
+        }
+        .press-headline {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1c1917;
+            line-height: 1.35;
+            margin-bottom: 8px;
+        }
+        .press-excerpt {
+            font-size: 13px;
+            color: #44403c;
+            line-height: 1.55;
+            margin: 0;
+        }
+        .case-study-box {
+            border: 1px solid #e4e4e7;
+            border-radius: 6px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            background: #fafafa;
+        }
+        .case-study-box:last-child {
+            margin-bottom: 0;
+        }
+        .case-study-box h3 {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #18181b;
+            margin: 0 0 6px 0;
+        }
+        .case-study-box p {
+            font-size: 13.5px;
+            color: #3f3f46;
+            line-height: 1.6;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="logo">
+            <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;">
+                <img src="logo.png" alt="StellenPrüfer">
+                <span>StellenPrüfer</span>
+            </a>
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html" class="active">About</a>
+            <a href="extension.html">Extension</a>
+            <a href="profile.html">Profile</a>
+            <a href="admin.html" id="adminNavLink" style="display: none; color: #b91c1c;">Admin</a>
+            <button class="logout-btn" onclick="logout()">Sign out</button>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+
+        <section class="welcome">
+            <div>
+                <img src="logo.png" alt="StellenPrüfer Logo" style="height: 58px; width: auto; display: block; margin-bottom: 12px;">
+                <h1>About StellenPrüfer</h1>
+                <p>Verify Before You Trust &mdash; A job and employer verification tool built for job seekers in Germany.</p>
+            </div>
+        </section>
+
+        <section class="verify-card" style="margin-bottom: 18px;">
+            <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Why This Project Was Created</h2>
+            <p style="color: #3f3f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                When applying for jobs in Germany, many applicants&mdash;especially students, graduates, and international job seekers&mdash;run into two major problems: <strong>fake job scams</strong> that try to steal personal data or money, and <strong>inactive &ldquo;ghost jobs&rdquo; (<em>Scheinstellen</em>)</strong> that stay online for months even though the company is no longer hiring.
+            </p>
+            <p style="color: #3f3f46; line-height: 1.7; font-size: 14px; margin: 0;">
+                <strong>StellenPrüfer</strong> was created to give applicants a fast, reliable way to check the real facts behind a job advertisement before they send their CV, passport, or personal details.
+            </p>
+        </section>
+
+        <!-- STATISTICAL RECORDS -->
+        <div class="stats-strip">
+            <div class="stat-record-card">
+                <div class="stat-record-num">20% &ndash; 36%</div>
+                <div class="stat-record-label">of online job listings are estimated to be inactive &ldquo;ghost jobs&rdquo; (<em>Scheinstellen</em>) with no immediate hiring intent.</div>
+                <span class="stat-record-src">Source: Greenhouse / Clarify Capital HR Surveys</span>
+            </div>
+            <div class="stat-record-card">
+                <div class="stat-record-num">&gt; 45 Days</div>
+                <div class="stat-record-label">Job ads left open past 45 days drop sharply in active response rate and are mostly used for passive CV collection.</div>
+                <span class="stat-record-src">Source: German Job Market Benchmark Studies</span>
+            </div>
+            <div class="stat-record-card">
+                <div class="stat-record-num">4 in 10</div>
+                <div class="stat-record-label">HR managers admit keeping job postings online to project company growth or collect future candidate profiles.</div>
+                <span class="stat-record-src">Source: ResumeBuilder / WirtschaftsWoche Reports</span>
+            </div>
+            <div class="stat-record-card">
+                <div class="stat-record-num">+60% Rise</div>
+                <div class="stat-record-label">in reported WhatsApp, Telegram, and fake remote-job scams targeting students and expats in Germany.</div>
+                <span class="stat-record-src">Source: Verbraucherzentrale &amp; Police Reports</span>
+            </div>
+        </div>
+
+        <!-- NEWSPAPER CUTTINGS & OFFICIAL REPORTS -->
+        <section class="verify-card" style="margin-bottom: 18px;">
+            <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">In the Press: Newspaper Cuttings &amp; Official Warnings</h2>
+            <div class="press-grid">
+                <div class="press-clipping">
+                    <img src="press_1.jpg" alt="Handelsblatt WirtschaftsWoche Phantom-Stellen" style="width: 100%; height: 195px; object-fit: cover; border-radius: 4px; border: 1px solid #d6d3d1; margin-bottom: 10px; display: block;">
+                    <div class="press-paper">Handelsblatt / WirtschaftsWoche &middot; Arbeitsmarkt</div>
+                    <div class="press-headline">&ldquo;Phantom-Stellen: Warum viele ausgeschriebene Jobs gar nicht existieren&rdquo;</div>
+                    <p class="press-excerpt">
+                        Companies increasingly leave job ads online for months despite hiring freezes&mdash;using <em>Scheinstellen</em> to signal growth to investors and fill applicant databases while candidates wait in vain.
+                    </p>
+                </div>
+
+                <div class="press-clipping">
+                    <img src="press_2.jpg" alt="Frankfurter Allgemeine Warnung vor Job-Scams" style="width: 100%; height: 195px; object-fit: cover; border-radius: 4px; border: 1px solid #d6d3d1; margin-bottom: 10px; display: block;">
+                    <div class="press-paper">Frankfurter Allgemeine &middot; Verbraucherschutz</div>
+                    <div class="press-headline">&ldquo;Warnung vor Job-Scams per WhatsApp, Telegram und Vorkasse&rdquo;</div>
+                    <p class="press-excerpt">
+                        Consumer protection agencies warn against fake recruiters offering remote roles that ask applicants to pay upfront equipment fees or forward bank transfers using their personal IBAN.
+                    </p>
+                </div>
+
+                <div class="press-clipping">
+                    <img src="press_3.jpg" alt="Süddeutsche Zeitung Identitätsdiebstahl bei der Jobsuche" style="width: 100%; height: 195px; object-fit: cover; border-radius: 4px; border: 1px solid #d6d3d1; margin-bottom: 10px; display: block;">
+                    <div class="press-paper">Süddeutsche Zeitung &middot; Digital &amp; Recht</div>
+                    <div class="press-headline">&ldquo;Identitätsdiebstahl bei der Jobsuche: Gefälschte Anzeigen sammeln Ausweiskopien&rdquo;</div>
+                    <p class="press-excerpt">
+                        Scammers copy the names of real German GmbHs on job portals to collect applicants&rsquo; passports, addresses, and bank details before any real interview takes place.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="verify-card" style="margin-bottom: 18px;">
+            <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">The Core Idea</h2>
+            <p style="color: #3f3f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                Most fake job ads copy professional wording from real companies, so simply reading the text is not enough. Instead of guessing from text alone, StellenPrüfer cross-checks verifiable facts: whether the company is officially registered in Germany, whether its website and career page are active, how old the job posting is, and whether the offered pay and contract follow German labor laws.
+            </p>
+            <p style="color: #3f3f46; line-height: 1.7; font-size: 14px; margin: 0;">
+                You can either paste a job link or upload a contract on our website, or use our <strong>Chrome Extension</strong> to check jobs in one click directly while browsing LinkedIn, StepStone, Indeed, or Arbeitsagentur.
+            </p>
+        </section>
+
+        <section class="verify-card" style="margin-bottom: 18px;">
+            <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">What We Check</h2>
+            <ul style="padding-left: 20px; color: #3f3f46; line-height: 1.9; font-size: 14px; margin: 0;">
+                <li><strong>Company Registration:</strong> Checks if the employer is officially listed in the German Commercial Register (<em>Handelsregister</em> HRB/HRA) or is a public institution.</li>
+                <li><strong>Website &amp; Email Safety:</strong> Verifies the official company domain, scans links for security threats (VirusTotal), and checks if the recruiter uses a real corporate email rather than free webmail.</li>
+                <li><strong>Ghost Job &amp; Vacancy Status:</strong> Warns if a job posting is already closed (<em>&ldquo;No longer accepting applications&rdquo;</em>) or has been online for more than 45 days.</li>
+                <li><strong>Salary &amp; Minimum Wage:</strong> Checks if the offered pay meets Germany&rsquo;s statutory minimum wage (13,90 &euro;/h under <em>MiLoG</em>) and realistic market rates.</li>
+                <li><strong>Scam Words &amp; Employment Contracts:</strong> Flags upfront payment demands, WhatsApp/Telegram-only interviews, and checks German employment contracts (<em>Arbeitsvertrag</em>) for missing legal clauses.</li>
+                <li><strong>Resume Match:</strong> Compares the job requirements against your uploaded PDF CV so you can see how well your skills match the role.</li>
+            </ul>
+        </section>
+
+        <section class="verify-card">
+            <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 10px;">How the Trust Score (0 - 100) Works</h2>
+            <ul style="padding-left: 20px; color: #3f3f46; line-height: 1.9; font-size: 14px; margin: 0;">
+                <li><strong>70 - 100 (High Trust):</strong> Company registration, website security, and active vacancy checks passed. Safe to apply.</li>
+                <li><strong>45 - 69 (Medium Trust):</strong> Verify details before applying&mdash;either some contact details could not be confirmed, or the job posting is closed / older than 45 days.</li>
+                <li><strong>0 - 44 (Low Trust):</strong> High scam risk&mdash;warning signs such as upfront fees, unverified domains, or illegal wages were detected.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <script src="dashboard.js?v=20261116_5"></script>
+</body>
+</html>
