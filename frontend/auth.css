@@ -197,13 +197,16 @@ body {
     background: rgba(11, 37, 69, 0.88);
     backdrop-filter: blur(4px);
     color: #ffffff;
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 700;
     text-align: center;
-    padding: 3px 6px;
+    padding: 3px 4px;
     border-radius: 6px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     border: 1px solid rgba(255, 255, 255, 0.15);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* 9-second looping keyframe sequence: Kick -> Space Wastebin -> Messi Celebration */
