@@ -122,21 +122,28 @@ body {
 
 .auth-hero-solution {
     display: inline-flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 18px;
-    background: var(--brand-green-light);
-    border: 1px solid rgba(22, 163, 74, 0.25);
-    border-radius: 12px;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
     font-size: 13.5px;
-    color: #166534;
+    color: var(--brand-navy);
     line-height: 1.5;
     margin-bottom: 22px;
-    font-weight: 500;
+    box-shadow: 0 4px 14px rgba(11, 37, 69, 0.04);
+}
+
+.auth-hero-solution .solution-logo {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 .auth-hero-solution strong {
-    color: #14532d;
+    color: var(--brand-navy);
     font-weight: 700;
 }
 
