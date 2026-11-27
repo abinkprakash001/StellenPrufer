@@ -1,3 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --brand-navy: #0b2545;
+    --brand-navy-light: #16395e;
+    --brand-navy-dark: #07192f;
+    --brand-green: #16a34a;
+    --brand-green-hover: #15803d;
+    --brand-green-light: #dcfce7;
+    --text-primary: #0b2545;
+    --text-body: #475569;
+    --text-muted: #64748b;
+    --bg-page: #f8fafc;
+    --card-bg: #ffffff;
+    --border-light: #e2e8f0;
+    --border-input: #cbd5e1;
+    --font-brand: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
 
 * {
     margin: 0;
@@ -6,170 +24,289 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7fb;
-    color: #1f2937;
+    font-family: var(--font-brand);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
-
 
 .auth-body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 36px 20px;
+    background: radial-gradient(circle at 12% 15%, rgba(11, 37, 69, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 88% 85%, rgba(22, 163, 74, 0.05) 0%, transparent 45%),
+                #f8fafc;
 }
 
-
-.auth-container {
+.auth-wrapper {
+    display: grid;
+    grid-template-columns: 1.15fr 0.95fr;
+    gap: 48px;
+    align-items: center;
+    max-width: 1080px;
     width: 100%;
-    max-width: 420px;
-    text-align: center;
+    margin: 0 auto;
 }
 
+/* ==========================================================================
+   LEFT COLUMN: BRANDING, MASCOT & SCAM AWARENESS
+   ========================================================================== */
+.auth-info-panel {
+    text-align: left;
+    color: var(--text-primary);
+}
 
-.auth-container h1 {
-    font-size: 42px;
-    color: #1d4ed8;
-    margin-bottom: 8px;
+.auth-brand-logo-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease;
+}
+
+.auth-brand-logo-row:hover {
+    opacity: 0.92;
+}
+
+.auth-brand-logo-row img {
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 10px rgba(11, 37, 69, 0.1));
+}
+
+.auth-brand-title {
+    font-family: var(--font-brand);
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--brand-navy);
+    letter-spacing: -0.03em;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.auth-brand-title span {
+    color: var(--brand-green);
+}
+
+.auth-hero-heading {
+    font-family: var(--font-brand);
+    font-size: 32px;
+    line-height: 1.25;
+    font-weight: 800;
+    color: var(--brand-navy);
+    margin-bottom: 14px;
+    letter-spacing: -0.025em;
+}
+
+.auth-hero-desc {
+    font-family: var(--font-brand);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin-bottom: 14px;
+}
+
+.auth-hero-desc strong {
+    color: var(--brand-navy);
     font-weight: 700;
 }
 
-
-.subtitle {
-    font-size: 16px;
-    color: #6b7280;
-    margin-bottom: 25px;
+.auth-hero-solution {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 14px;
+    font-size: 13.5px;
+    color: var(--brand-navy);
+    line-height: 1.5;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 14px rgba(11, 37, 69, 0.04);
 }
 
+.auth-hero-solution .solution-logo {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.auth-hero-solution strong {
+    color: var(--brand-navy);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   MOVEMENT TEXT BOX (CLEAN, NO VIDEO)
+   ========================================================================== */
+.auth-movement-box {
+    background: #ffffff;
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
+}
+
+.auth-movement-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-brand);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--brand-navy);
+    margin-bottom: 8px;
+}
+
+.auth-movement-box p {
+    font-family: var(--font-brand);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-body);
+    margin: 0;
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: AUTH CARD (MATCHING LOGO DESIGN & COLORS)
+   ========================================================================== */
+.auth-card-panel {
+    width: 100%;
+}
 
 .auth-card {
     background: #ffffff;
-    padding: 35px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    padding: 42px 36px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 18px 45px rgba(11, 37, 69, 0.08);
     text-align: left;
 }
 
-
 .auth-card h2 {
-    text-align: center;
-    font-size: 27px;
-    margin-bottom: 8px;
-    color: #111827;
+    font-family: var(--font-brand);
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: var(--brand-navy);
+    letter-spacing: -0.025em;
 }
-
 
 .auth-card > p {
-    text-align: center;
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 25px;
+    font-family: var(--font-brand);
+    color: var(--text-muted);
+    font-size: 14.5px;
+    margin-bottom: 26px;
 }
-
 
 .auth-card label {
+    font-family: var(--font-brand);
     display: block;
     margin-bottom: 7px;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
-    color: #374151;
+    color: var(--brand-navy);
 }
 
-
-.auth-card input {
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"] {
+    font-family: var(--font-brand);
     width: 100%;
-    padding: 13px 14px;
+    padding: 13px 16px;
     margin-bottom: 18px;
-    border: 1px solid #d1d5db;
-    border-radius: 7px;
+    border: 1.5px solid var(--border-input);
+    border-radius: 10px;
     font-size: 15px;
     outline: none;
+    background: #ffffff;
+    color: var(--brand-navy);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-
 .auth-card input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    border-color: var(--brand-navy);
+    box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.12);
 }
 
-
-.auth-card button {
+/* BUTTON MATCHING LOGO NAVY + GREEN HOVER */
+.auth-card button[type="submit"] {
+    font-family: var(--font-brand);
     width: 100%;
-    padding: 13px;
+    padding: 14px;
     border: none;
-    border-radius: 7px;
-    background: #2563eb;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-navy-light) 100%);
+    color: #ffffff;
+    font-size: 15.5px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(11, 37, 69, 0.25);
+    margin-top: 6px;
 }
 
-
-.auth-card button:hover {
-    background: #1d4ed8;
+.auth-card button[type="submit"]:hover {
+    background: linear-gradient(135deg, #0e7490 0%, var(--brand-green) 100%);
+    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+    transform: translateY(-1px);
 }
 
+.auth-card button[type="submit"]:active {
+    transform: translateY(0);
+}
 
 .switch-page {
-    margin-top: 20px !important;
+    font-family: var(--font-brand);
+    margin-top: 22px !important;
     margin-bottom: 0 !important;
     font-size: 14px !important;
-    color: #6b7280;
+    color: var(--text-muted);
+    text-align: center;
 }
-
 
 .switch-page a {
-    color: #2563eb;
+    color: var(--brand-green);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
+    transition: color 0.15s ease;
 }
 
-
 .switch-page a:hover {
+    color: var(--brand-navy);
     text-decoration: underline;
 }
 
-
 .message {
-    margin-top: 15px;
+    font-family: var(--font-brand);
+    margin-top: 14px;
     text-align: center !important;
-    font-size: 14px !important;
+    font-size: 13.5px !important;
 }
 
-
-@media (max-width: 480px) {
-    .auth-card {
-        padding: 28px 22px;
-    }
-
-    .auth-container h1 {
-        font-size: 36px;
-    }
-}
-
-
-@keyframes spinLogo {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
+/* ==========================================================================
+   SCREEN LOADER OVERLAY
+   ========================================================================== */
 .screen-loader-overlay {
     position: fixed;
     inset: 0;
     background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(3px);
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
     z-index: 9999;
 }
 
@@ -177,13 +314,56 @@ body {
     display: flex;
 }
 
-.screen-loader-overlay img {
-    display: none;
-}
-
 .screen-loader-overlay p {
+    font-family: var(--font-brand);
     font-size: 16px;
     font-weight: 600;
-    color: #1e3a8a;
+    color: var(--brand-navy);
     margin: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 960px) {
+    .auth-wrapper {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        max-width: 520px;
+    }
+
+    .auth-info-panel {
+        text-align: center;
+    }
+
+    .auth-brand-logo-row {
+        justify-content: center;
+    }
+
+    .auth-mascot-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .auth-mascot-text h3 {
+        justify-content: center;
+    }
+
+    .auth-hero-heading {
+        font-size: 27px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 30px 22px;
+    }
+
+    .auth-brand-logo-row img {
+        height: 56px;
+    }
+
+    .auth-brand-title {
+        font-size: 28px;
+    }
 }

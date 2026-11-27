@@ -1,9 +1,14 @@
 // StellenPrüfer Authentication & Page Transition Scripts
 
 function getApiBase() {
-    return (window.location.protocol === "file:" || window.location.port !== "5000")
-        ? "http://127.0.0.1:5000"
-        : "";
+    if (window.location.protocol === "file:") {
+        return "http://127.0.0.1:5000";
+    }
+    const host = window.location.hostname;
+    if ((host === "localhost" || host === "127.0.0.1") && window.location.port && window.location.port !== "5000") {
+        return "http://127.0.0.1:5000";
+    }
+    return "";
 }
 
 function ensureScreenLoader() {
