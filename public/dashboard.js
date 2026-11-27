@@ -2235,25 +2235,25 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
     let trustGuidanceNote = "Medium Trust (45 – 69): Some company or recruiter details could not be confirmed automatically. Please verify the employer and contact details before sending personal documents.";
 
     if (isClosedTop) {
-        simpleStatusLabel = "45 – 69: JOB CLOSED (EMPLOYER VERIFIED — NO LONGER ACCEPTING APPLICATIONS)";
-        trustGuidanceNote = "Job Closed (45 – 69): The employer is verified, but this job advertisement states that it is closed and no longer accepting applications.";
+        simpleStatusLabel = "45 - 69: JOB CLOSED (EMPLOYER VERIFIED, NO LONGER ACCEPTING APPLICATIONS)";
+        trustGuidanceNote = "Job Closed (45 - 69): The employer is verified, but this job advertisement states that it is closed and no longer accepting applications.";
     } else if (isGhostTop) {
-        simpleStatusLabel = "45 – 69: OLD LISTING / POSSIBLE GHOST JOB (VERIFY VACANCY BEFORE APPLYING)";
-        trustGuidanceNote = "Possible Ghost Job (45 – 69): The employer is verified, but this listing was posted over 45 days ago and may be inactive.";
+        simpleStatusLabel = "45 - 69: OLD LISTING / POSSIBLE GHOST JOB (VERIFY VACANCY BEFORE APPLYING)";
+        trustGuidanceNote = "Possible Ghost Job (45 - 69): The employer is verified, but this listing was posted over 45 days ago and may be inactive.";
     } else if (scoreVal >= 70 || (resUpper === "LIKELY VALID" && scoreVal >= 70) || resUpper === "SAFE") {
         statusDot = "#16a34a";
         statusBg = "#f0fdf4";
         statusText = "#166534";
         statusBorder = "#bbf7d0";
-        simpleStatusLabel = "70 – 100: HIGH TRUST (LIKELY VALID — SAFE TO APPLY)";
-        trustGuidanceNote = "High Trust (70 – 100): Company registration, domain safety, and job details passed verification checks. Likely valid and safe to apply.";
+        simpleStatusLabel = "70 - 100: HIGH TRUST (LIKELY VALID, SAFE TO APPLY)";
+        trustGuidanceNote = "High Trust (70 - 100): Company registration, domain safety, and job details passed verification checks. Likely valid and safe to apply.";
     } else if (scoreVal <= 44 || resUpper === "NOT VERIFIED" || resUpper === "HIGH RISK" || resUpper === "INVALID LINK") {
         statusDot = "#dc2626";
         statusBg = "#fef2f2";
         statusText = "#991b1b";
         statusBorder = "#fecaca";
-        simpleStatusLabel = "0 – 44: LOW TRUST / HIGH SCAM RISK (APPLY AT YOUR OWN RISK)";
-        trustGuidanceNote = "Low Trust / High Scam Risk (0 – 44): Warning signs detected. Apply at your own risk — never pay upfront fees or share identity cards or bank details.";
+        simpleStatusLabel = "0 - 44: LOW TRUST / HIGH SCAM RISK (APPLY AT YOUR OWN RISK)";
+        trustGuidanceNote = "Low Trust / High Scam Risk (0 - 44): Warning signs detected. Apply at your own risk. Never pay upfront fees or share identity cards or bank details.";
     }
 
     let flagNotice = "";
@@ -2441,7 +2441,7 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
         const badgeBg = isGhost ? "#fef3c7" : "#dcfce7";
         const badgeColor = isGhost ? "#92400e" : "#166534";
         const badgeBorder = isGhost ? "#fde68a" : "#bbf7d0";
-        const statusLabel = isGhost ? "⚠ POSSIBLE GHOST JOB (SCHEINSTELLE) — APPLY WITH CAUTION" : "✓ NOT A GHOST JOB — ACTIVE GENUINE VACANCY";
+        const statusLabel = isGhost ? "⚠ POSSIBLE GHOST JOB (SCHEINSTELLE) - APPLY WITH CAUTION" : "✓ NOT A GHOST JOB - ACTIVE GENUINE VACANCY";
 
         ghostJobHtml = `
             <div style="margin-top: 16px; padding: 18px 20px; background: #ffffff; border: 1px solid ${isGhost ? '#fde68a' : '#e4e4e7'}; border-radius: 8px;">
@@ -2459,15 +2459,15 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
 
                 ${isClosedTop ? `
                     <div style="margin-top: 12px; padding: 11px 14px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; font-size: 13px; color: #991b1b; line-height: 1.5;">
-                        <strong>⛔ Verdict — Vacancy Closed (No Longer Accepting Applications):</strong> This listing (Posted: <strong>${escapeHtml(gja.date_posted || 'Previously')}${gja.age_days ? ` — ${gja.age_days} days ago` : ''}</strong>) explicitly states that it is closed and no longer accepting applications.
+                        <strong>⛔ Verdict - Vacancy Closed (No Longer Accepting Applications):</strong> This listing (Posted: <strong>${escapeHtml(gja.date_posted || 'Previously')}${gja.age_days ? `, ${gja.age_days} days ago` : ''}</strong>) explicitly states that it is closed and no longer accepting applications.
                     </div>
                 ` : (isGhost ? `
                     <div style="margin-top: 12px; padding: 11px 14px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; font-size: 13px; color: #78350f; line-height: 1.5;">
-                        <strong>⚠ Verdict — Possible Ghost Job (Scheinstelle):</strong> This listing triggered ghost job indicators (Posted: <strong>${escapeHtml(gja.date_posted || 'over 45 days ago')}${gja.age_days ? ` — ${gja.age_days} days ago` : ''}</strong>). Companies sometimes leave roles open to build passive CV pipelines, signal growth to investors, or benchmark salaries without immediate hiring intent.
+                        <strong>⚠ Verdict - Possible Ghost Job (Scheinstelle):</strong> This listing triggered ghost job indicators (Posted: <strong>${escapeHtml(gja.date_posted || 'over 45 days ago')}${gja.age_days ? `, ${gja.age_days} days ago` : ''}</strong>). Companies sometimes leave roles open to build passive CV pipelines, signal growth to investors, or benchmark salaries without immediate hiring intent.
                     </div>
                 ` : `
                     <div style="margin-top: 12px; padding: 11px 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; font-size: 13px; color: #166534; line-height: 1.5;">
-                        <strong>✓ Verdict — Not a Ghost Job (Active Vacancy):</strong> This listing passed active vacancy checks (Posted: <strong>${escapeHtml(gja.date_posted || 'Recently')}</strong>) with concrete role details and verified employer presence.
+                        <strong>✓ Verdict - Not a Ghost Job (Active Vacancy):</strong> This listing passed active vacancy checks (Posted: <strong>${escapeHtml(gja.date_posted || 'Recently')}</strong>) with concrete role details and verified employer presence.
                     </div>
                 `)}
 
@@ -2515,7 +2515,7 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
                                         </tr>
                                     `).join("") : `
                                         <tr>
-                                            <td style="padding: 12px; color: #64748b; font-size: 12px;">None — all 5 vacancy checks passed with 0 flags.</td>
+                                            <td style="padding: 12px; color: #64748b; font-size: 12px;">None. All 5 vacancy checks passed with 0 flags.</td>
                                         </tr>
                                     `}
                                 </tbody>
@@ -2549,7 +2549,7 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
 
                     <div style="margin-top: 3px; color: #166534; font-weight: 600;">
 
-                        ${data.customer_website_check && data.customer_website_check.website_found ? `Yes &mdash; <a href="${escapeHtml(data.customer_website_check.customer_website_url)}" target="_blank" style="color: #1d4ed8; text-decoration: underline;">${escapeHtml(data.customer_website_check.customer_domain)}</a>` : 'Checked online'}
+                        ${data.customer_website_check && data.customer_website_check.website_found ? `Yes - <a href="${escapeHtml(data.customer_website_check.customer_website_url)}" target="_blank" style="color: #1d4ed8; text-decoration: underline;">${escapeHtml(data.customer_website_check.customer_domain)}</a>` : 'Checked online'}
 
                     </div>
 
@@ -3530,7 +3530,7 @@ function renderHistory(history) {
         let badgeBg = "#f0fdf4";
         let badgeColor = "#166534";
         let badgeBorder = "#bbf7d0";
-        let historyStatusText = "70–100: HIGH TRUST (LIKELY VALID — SAFE TO APPLY)";
+        let historyStatusText = "70-100: HIGH TRUST (LIKELY VALID, SAFE TO APPLY)";
 
         if (res.includes("HIGH RISK") || res.includes("DANGER") || res.includes("FAKE") || res.includes("NOT VERIFIED")) {
             badgeBg = "#fef2f2";

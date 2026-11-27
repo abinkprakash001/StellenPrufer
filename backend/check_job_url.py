@@ -1165,7 +1165,7 @@ def extract_posting_date_and_availability(html_content):
         if age_days > 45:
             is_ghost_job = True
             if availability_status == "OPEN / ACTIVE":
-                availability_status = f"OLD LISTING ({age_days} days old — Might be a Ghost Job)"
+                availability_status = f"OLD LISTING ({age_days} days old - Might be a Ghost Job)"
                 warning = (
                     f"This job was posted {age_days} days ago (>45 days) and is still listed. "
                     f"It might be a Ghost Job (Scheinstelle). {ghost_job_explanation}"
@@ -1173,7 +1173,7 @@ def extract_posting_date_and_availability(html_content):
             else:
                 warning = (
                     f"This job posting states that it is closed or no longer accepting applications "
-                    f"(originally posted {posted_date_obj} — {age_days} days ago)."
+                    f"(originally posted {posted_date_obj}, {age_days} days ago)."
                 )
     if availability_status == "OPEN / ACTIVE" and not posted_date_obj:
         if False:
@@ -1196,7 +1196,7 @@ def extract_posting_date_and_availability(html_content):
             if days_count > 45 or ("30+" in date_posted_raw) or ("+" in date_posted_raw and ("month" in date_posted_raw.lower() or "tag" in date_posted_raw.lower())):
                 is_ghost_job = True
                 display_age = f"{days_count} days old" if days_count > 0 else date_posted_raw
-                availability_status = f"OLD LISTING ({display_age} — Might be a Ghost Job)"
+                availability_status = f"OLD LISTING ({display_age} - Might be a Ghost Job)"
                 warning = (
                     f"This job was posted '{date_posted_raw}' (>45 days ago) and is still listed. "
                     f"It might be a Ghost Job (Scheinstelle). {ghost_job_explanation}"

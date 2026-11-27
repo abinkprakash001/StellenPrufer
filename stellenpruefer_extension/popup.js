@@ -520,7 +520,7 @@ function renderVerificationResult(data, tabInfo) {
 
   const score = typeof data.trust_score === "number" ? data.trust_score : (res === "LIKELY VALID" ? 92 : (res === "HIGH RISK" ? 20 : 60));
 
-  const trustLabel = data.trust_label || (score >= 70 ? "70–100: High Trust (Likely Valid — Safe to Apply)" : (score >= 45 ? "45–69: Medium Trust (Verify Details)" : "0–44: Low Trust / High Scam Risk (Apply at Your Own Risk)"));
+  const trustLabel = data.trust_label || (score >= 70 ? "70-100: High Trust (Likely Valid, Safe to Apply)" : (score >= 45 ? "45-69: Medium Trust (Verify Details)" : "0-44: Low Trust / High Scam Risk (Apply at Your Own Risk)"));
 
   const scoreCircle = document.getElementById("scoreCircle");
 

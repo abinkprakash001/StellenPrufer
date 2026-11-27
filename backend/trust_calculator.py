@@ -254,17 +254,17 @@ def calculate_trust_score_and_breakdown(
             is_ghost_job = True
             display_days = f"{d_cnt} days old" if d_cnt > 0 else date_posted
             if not is_closed_job:
-                availability_status = f"OLD LISTING ({display_days} — Might be a Ghost Job)"
+                availability_status = f"OLD LISTING ({display_days} - Might be a Ghost Job)"
                 avail_str = availability_status.upper()
 
     if is_closed_job:
         score -= 30
-        age_suffix = f" (Posted {date_posted} — {d_cnt} days ago)" if d_cnt > 45 else (f" (Posted {date_posted})" if date_posted and date_posted != "Not specified" else "")
+        age_suffix = f" (Posted {date_posted}, {d_cnt} days ago)" if d_cnt > 45 else (f" (Posted {date_posted})" if date_posted and date_posted != "Not specified" else "")
         breakdown.append({
             "type": "warning",
             "icon": "WARNING",
             "category": "Job Availability Status",
-            "title": "Job Closed — No Longer Accepting Applications",
+            "title": "Job Closed - No Longer Accepting Applications",
             "detail": f"This job listing states that it is closed or no longer accepting applications{age_suffix}.",
             "impact": "-30%"
         })
@@ -434,15 +434,15 @@ def calculate_trust_score_and_breakdown(
     score = max(10, min(score, 98))
 
     if is_closed_job:
-        trust_label = "45 – 69: Job Closed (Employer Verified — No Longer Accepting Applications)"
+        trust_label = "45 - 69: Job Closed (Employer Verified, No Longer Accepting Applications)"
     elif is_ghost_job:
-        trust_label = "45 – 69: Old Listing / Possible Ghost Job (Posted > 45 Days Ago — Verify Vacancy)"
+        trust_label = "45 - 69: Old Listing / Possible Ghost Job (Posted > 45 Days Ago, Verify Vacancy)"
     elif score >= 70:
-        trust_label = "70 – 100: High Trust (Likely Valid — Safe to Apply)"
+        trust_label = "70 - 100: High Trust (Likely Valid, Safe to Apply)"
     elif score >= 45:
-        trust_label = "45 – 69: Medium Trust (Verify Details Before Applying)"
+        trust_label = "45 - 69: Medium Trust (Verify Details Before Applying)"
     else:
-        trust_label = "0 – 44: Low Trust / High Scam Risk (Apply at Your Own Risk)"
+        trust_label = "0 - 44: Low Trust / High Scam Risk (Apply at Your Own Risk)"
 
     c_person_val = (contact_details.get("contact_person") or "").strip()
     c_email_val = (contact_details.get("email") or recruiter_email or "").strip()
@@ -459,7 +459,7 @@ def calculate_trust_score_and_breakdown(
         age_detail = f"Posted: {date_posted}. Listing states that it is closed or no longer accepting applications."
     elif is_ghost_job:
         age_status = f"Stale ({date_posted}" + (f", {d_cnt}d old)" if d_cnt > 0 else ")")
-        age_detail = f"Posted: {date_posted}" + (f" ({d_cnt} days ago — exceeds 45-day active window)." if d_cnt > 0 else " (> 45 days ago — exceeds active window).")
+        age_detail = f"Posted: {date_posted}" + (f" ({d_cnt} days ago, exceeds 45-day active window)." if d_cnt > 0 else " (> 45 days ago, exceeds active window).")
     else:
         age_status = "Fresh (< 30–45 Days)"
         age_detail = f"Posted: {date_posted}. Genuine vacancies typically fill within 30–60 days."
@@ -507,7 +507,7 @@ def calculate_trust_score_and_breakdown(
         ghost_risk_label = "High Ghost Job Risk (Possible Phantom / Pipeline Ad)"
         status_comment = "Might be a Ghost Job (Scheinstelle)"
     elif failed_flags >= 2:
-        ghost_risk_label = "Moderate Ghost Risk — Verify Vacancy"
+        ghost_risk_label = "Moderate Ghost Risk - Verify Vacancy"
         status_comment = "Verify Vacancy Status"
     else:
         ghost_risk_label = "Low Ghost Job Risk (Active Genuine Vacancy)"

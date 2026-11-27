@@ -431,7 +431,7 @@
                             <div><strong>Job URL:</strong> ${c.job_url ? `<a href="${escapeHtml(c.job_url)}" target="_blank">${escapeHtml(c.job_url)}</a>` : "Not provided"}</div>
                             <div><strong>Recruiter Email:</strong> ${escapeHtml(c.recruiter_email || "Not provided")}</div>
                             <div><strong>Reason:</strong> ${escapeHtml(c.reason || "-")}</div>
-                            <div><strong>Warning Count:</strong> ${(c.warnings && c.warnings.length) ? c.warnings.length : 0}${(c.warnings && c.warnings.length) ? ` — ${escapeHtml(c.warnings.join(" | "))}` : ""}</div>
+                            <div><strong>Warning Count:</strong> ${(c.warnings && c.warnings.length) ? c.warnings.length : 0}${(c.warnings && c.warnings.length) ? ` - ${escapeHtml(c.warnings.join(" | "))}` : ""}</div>
                             <div style="margin-top: 6px;">
                                 <a href="result.html?checkId=${c.id}" class="more-btn">Open Full Report Page &rarr;</a>
                             </div>
