@@ -1,14 +1,13 @@
 // StellenPrüfer Core Verification Dashboard Scripts
 
 function getApiBase() {
-    if (window.location.protocol === "file:") {
-        return "http://127.0.0.1:5000";
-    }
-    const host = window.location.hostname;
-    if ((host === "localhost" || host === "127.0.0.1") && window.location.port && window.location.port !== "5000") {
-        return "http://127.0.0.1:5000";
-    }
-    return "";
+
+    return (window.location.protocol === "file:" || window.location.port !== "5000")
+
+        ? "http://127.0.0.1:5000"
+
+        : "";
+
 }
 
 function getCurrentUser() {
@@ -510,32 +509,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     sessionStorage.setItem("stellenpruefer_last_result", JSON.stringify(res.saved));
 
                     displayResult(res.saved.data, res.saved.inputs || {}, "resultBox");
-
-                } else if (targetKey !== "latest") {
-
-                    return fetch(`${getApiBase()}/api/check-result/latest`)
-
-                        .then(r => r.json())
-
-                        .then(lRes => {
-
-                            if (lRes && lRes.success && lRes.saved && lRes.saved.data) {
-
-                                displayResult(lRes.saved.data, lRes.saved.inputs || {}, "resultBox");
-
-                            } else if (!sessionStorage.getItem("stellenpruefer_last_result")) {
-
-                                const rb = document.getElementById("resultBox");
-
-                                if (rb) {
-
-                                    rb.innerHTML = `<p style="color: #71717a; text-align: center; padding: 24px;">No verification report found. Please return to the Home page and submit a job advertisement or contract check.</p>`;
-
-                                }
-
-                            }
-
-                        });
 
                 } else if (!sessionStorage.getItem("stellenpruefer_last_result")) {
 

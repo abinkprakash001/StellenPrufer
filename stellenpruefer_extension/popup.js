@@ -1314,7 +1314,7 @@ function populateDetailedView(data) {
 
             const span = document.createElement("span");
 
-            span.style.cssText = "font-family: Consolas, 'Courier New', monospace; font-size: 10px; font-weight: 600; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; border: 1px solid #bbf7d0;";
+            span.style.cssText = "font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: 600; background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; border: 1px solid #bbf7d0;";
 
             span.textContent = `✓ ${s}`;
 
@@ -1473,7 +1473,7 @@ function populateDetailedView(data) {
 
             <strong style="color: #18181b; font-size: 11.5px;">${item.title}</strong>
 
-            <span style="font-family: Consolas, 'Courier New', monospace; color: ${badgeBg}; font-size: 10.5px; font-weight: 600;">${item.impact}</span>
+            <span style="font-family: Arial, Helvetica, sans-serif; color: ${badgeBg}; font-size: 10.5px; font-weight: 600;">${item.impact}</span>
 
           </div>
 

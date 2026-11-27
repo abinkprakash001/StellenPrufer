@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StellenPrüfer — Verify Before You Trust | Job &amp; Employer Verification</title>
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="main.css?v=20261107_v2">
+    <link rel="stylesheet" href="main.css?v=20261127_2">
     <style>
         /* Scroll-linked Topbar Brand: hidden while big hero brand is visible, slides into header on scroll */
         .topbar .logo {
@@ -46,22 +46,22 @@
             flex-shrink: 0;
         }
         .hero-brand-name {
-            font-size: clamp(36px, 5vw, 54px);
+            font-size: clamp(32px, 4.5vw, 46px);
             font-weight: 700;
             color: #0f172a;
-            letter-spacing: -0.035em;
-            line-height: 1.08;
+            letter-spacing: normal;
+            line-height: 1.15;
             margin: 0;
         }
         .hero-brand-name span {
             color: #16a34a;
         }
         .workspace-motto {
-            font-size: clamp(18px, 2.4vw, 23px);
+            font-size: clamp(17px, 2.2vw, 21px);
             font-weight: 600;
             color: #18181b;
-            letter-spacing: -0.02em;
-            line-height: 1.35;
+            letter-spacing: normal;
+            line-height: 1.4;
             margin: 0 0 8px 0;
             max-width: 720px;
         }
@@ -494,7 +494,7 @@
                 <img src="logo.png" alt="StellenPrüfer Logo" class="hero-brand-logo">
                 <h1 class="hero-brand-name">Stellen<span>Prüfer</span></h1>
             </div>
-            <p class="workspace-motto">Verify Before You Trust, Check a job or employer before you apply.</p>
+            <p class="workspace-motto">Verify Before You Trust &mdash; Check a job or employer before you apply.</p>
             <p class="workspace-subtitle">
                 Paste a job posting URL below to verify the employer, official career page, and listing status.
             </p>
@@ -636,6 +636,22 @@
     </section>
 
     <main class="dashboard">
+
+        <section class="registry-ledger">
+            <div class="ledger-cell">
+                <div class="ledger-label">Postings analyzed</div>
+                <div class="ledger-value" id="statTotalChecks">-</div>
+            </div>
+            <div class="ledger-cell">
+                <div class="ledger-label">Employers checked</div>
+                <div class="ledger-value" id="statCompanies">-</div>
+            </div>
+            <div class="ledger-cell">
+                <div class="ledger-label">Flagged listings</div>
+                <div class="ledger-value" id="statFlaggedFake" style="color: #b91c1c;">-</div>
+            </div>
+            
+        </section>
 
         <!-- WHAT WE CHECK -->
         <section class="spec-grid">
