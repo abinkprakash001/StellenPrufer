@@ -2329,7 +2329,7 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
 
             : `${sa.formatted_offered} (${sa.verdict})`)
 
-        : (salaryVal ? `${salaryVal} (Min. Wage: 13,90 €/h)` : "Standard Pay (Min. Wage: 13,90 €/h)");
+        : ((salaryVal && String(salaryVal) !== "0") ? `${salaryVal} (Min. Wage: 13,90 €/h)` : "Standard Pay (Min. Wage: 13,90 €/h)");
 
     const resumeSummaryText = (rf.has_resume && typeof rf.fit_score === "number")
 
