@@ -2427,6 +2427,7 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
 
                 </div>
 
+                <!-- Hidden for thesis presentation:
                 <div style="padding: 10px 12px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 6px;">
 
                     <div style="font-size: 11.5px; color: #71717a; font-weight: 500;">Resume Match</div>
@@ -2438,6 +2439,7 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
                     </div>
 
                 </div>
+                -->
 
                 <div style="padding: 10px 12px; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 6px;">
 
@@ -3090,11 +3092,11 @@ function displayResult(data, inputs, targetBoxId = "resultBox") {
 
     `;
 
-    // 4. Resume & Skills Match Card
+    // 4. Resume & Skills Match Card (Commented out for thesis presentation; kept for later use)
 
     let resumeCardHtml = "";
 
-    if (rf.has_resume) {
+    if (false && rf.has_resume) {
 
         resumeCardHtml = `
 
