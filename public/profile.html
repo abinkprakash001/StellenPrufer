@@ -16,6 +16,45 @@
             margin: 28px auto;
             padding: 0 20px;
         }
+        .registry-ledger {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            overflow: hidden;
+        }
+        .ledger-cell {
+            padding: 14px 18px;
+            border-right: 1px solid #e4e4e7;
+        }
+        .ledger-cell:last-child {
+            border-right: none;
+        }
+        .ledger-label {
+            font-size: 12px;
+            color: #71717a;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .ledger-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #18181b;
+        }
+        @media (max-width: 680px) {
+            .registry-ledger {
+                grid-template-columns: 1fr;
+            }
+            .ledger-cell {
+                border-right: none;
+                border-bottom: 1px solid #e4e4e7;
+            }
+            .ledger-cell:last-child {
+                border-bottom: none;
+            }
+        }
         .profile-layout section,
         .profile-layout .history-list,
         .profile-layout .history-list * {
@@ -130,6 +169,21 @@
 
         <!-- RIGHT SIDE: PREVIOUS JOB SEARCHES (HISTORY) -->
         <section class="history" id="history" style="margin-bottom: 0; background: #ffffff; border: 1px solid #e4e4e7; border-radius: 8px; padding: 24px;">
+            <div class="registry-ledger">
+                <div class="ledger-cell">
+                    <div class="ledger-label">Postings analyzed</div>
+                    <div class="ledger-value" id="statTotalChecks">-</div>
+                </div>
+                <div class="ledger-cell">
+                    <div class="ledger-label">Employers checked</div>
+                    <div class="ledger-value" id="statCompanies">-</div>
+                </div>
+                <div class="ledger-cell">
+                    <div class="ledger-label">Flagged listings</div>
+                    <div class="ledger-value" id="statFlaggedFake" style="color: #b91c1c;">-</div>
+                </div>
+            </div>
+
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9;">
                 <div>
                     <h2 style="font-size: 20px; font-weight: 600; color: #18181b; margin-bottom: 2px;">Previous Job Searches</h2>
@@ -202,7 +256,28 @@
         </div>
     </footer>
 
-    <script src="dashboard.js?v=20261107_v2"></script>
+    <script src="dashboard.js?v=20261127_2"></script>
+    <script>
+        async function loadLivePlatformStats() {
+            try {
+                const res = await fetch(`${getApiBase()}/api/platform-stats`);
+                const data = await res.json();
+                if (data && data.success && data.stats) {
+                    const s = data.stats;
+                    const elTotal = document.getElementById("statTotalChecks");
+                    const elComp = document.getElementById("statCompanies");
+                    const elFake = document.getElementById("statFlaggedFake");
+
+                    if (elTotal) elTotal.textContent = Number(s.total_jobs_analyzed || 0).toLocaleString();
+                    if (elComp) elComp.textContent = Number(s.verified_companies || 0).toLocaleString();
+                    if (elFake) elFake.textContent = Number(s.fake_listings_flagged || 0).toLocaleString();
+                }
+            } catch (err) {
+                console.error("Error loading live stats:", err);
+            }
+        }
+        document.addEventListener("DOMContentLoaded", loadLivePlatformStats);
+    </script>
 
 </body>
 </html>
